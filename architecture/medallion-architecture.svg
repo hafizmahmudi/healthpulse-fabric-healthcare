@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="940" viewBox="0 0 1400 940" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#5b6470"/></marker></defs>
+<rect width="1400" height="940" fill="#ffffff"/>
+<rect x="20" y="20" width="1360" height="190" rx="10" ry="10" fill="#f8f9fb" stroke="#d5d9e0" stroke-width="1.2"/>
+<text x="36" y="44" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="600" fill="#7a8290" letter-spacing="0.8">BRONZE  -  HP_01_LH_HEALTH_BRONZE  (LAKEHOUSE, PYSPARK)</text>
+<rect x="40" y="56" width="280" height="136" rx="8" ry="8" fill="#ffffff" stroke="#c9ced6" stroke-width="1.0"/>
+<text x="54" y="88.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1f27" text-anchor="start">Rule: keep the source shape</text>
+<text x="54" y="104.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="start">Values untouched, column names</text>
+<text x="54" y="120.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="start">sanitized for Delta. Adds _ingestion_timestamp,</text>
+<text x="54" y="136.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="start">_source_system, _source_entity, _pipeline_run_id.</text>
+<text x="54" y="152.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="start">Full loads overwrite, incremental loads append</text>
+<text x="54" y="168.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="start">rows newer than the watermark.</text>
+<rect x="360" y="76" width="250" height="96" rx="8" ry="8" fill="#ffffff" stroke="#8a9099" stroke-width="1.4"/>
+<text x="485.0" y="112.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1f27" text-anchor="middle">Files/synthea</text>
+<text x="485.0" y="129.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#4a5261" text-anchor="middle">raw downloads and extracted</text>
+<text x="485.0" y="145.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#4a5261" text-anchor="middle">CSV copies (landing zone)</text>
+<rect x="700" y="76" width="420" height="96" rx="8" ry="8" fill="#e8f1fb" stroke="#3a7bc8" stroke-width="1.6"/>
+<text x="910.0" y="112.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1f27" text-anchor="middle">bronze.* Delta tables</text>
+<text x="910.0" y="129.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#4a5261" text-anchor="middle">13 tables, one per source entity:</text>
+<text x="910.0" y="145.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#4a5261" text-anchor="middle">bronze_patients, bronze_encounters, ...</text>
+<path d="M 610.0 124.0 L 700.0 124.0" fill="none" stroke="#5b6470" stroke-width="1.4" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="606.0" y="108.0" width="98.0" height="14" fill="#ffffff" fill-opacity="0.92"/>
+<text x="655.0" y="119.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="#5b6470" text-anchor="middle">HP_05_02 loader</text>
+<rect x="700" y="244" width="420" height="56" rx="8" ry="8" fill="#f1f2f4" stroke="#8a9099" stroke-width="1.4"/>
+<text x="910.0" y="268.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1f27" text-anchor="middle">HP_06_01_NB_BronzeToSilver</text>
+<text x="910.0" y="284.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="middle">PySpark, one registered transform per entity</text>
+<path d="M 910.0 172.0 L 910.0 244.0" fill="none" stroke="#5b6470" stroke-width="1.4" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="20" y="334" width="1360" height="260" rx="10" ry="10" fill="#f8f9fb" stroke="#d5d9e0" stroke-width="1.2"/>
+<text x="36" y="358" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="600" fill="#7a8290" letter-spacing="0.8">SILVER  -  HP_02_LH_HEALTH_SILVER  (LAKEHOUSE, SCHEMA-ENABLED)</text>
+<rect x="40" y="370" width="280" height="200" rx="8" ry="8" fill="#ffffff" stroke="#c9ced6" stroke-width="1.0"/>
+<text x="54" y="418.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1f27" text-anchor="start">Rule: one clean row per key</text>
+<text x="54" y="434.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="start">Typed columns, standard names.</text>
+<text x="54" y="450.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="start">Deterministic SHA-256 IDs where the</text>
+<text x="54" y="466.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="start">source has none, keep_latest dedupe.</text>
+<text x="54" y="482.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="start">22 blocking and warning rules; rejected</text>
+<text x="54" y="498.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="start">rows go to quarantine, never deleted.</text>
+<text x="54" y="514.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="start">Delta MERGE on the key, so re-runs</text>
+<text x="54" y="530.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="start">are idempotent.</text>
+<rect x="340" y="390" width="240" height="96" rx="8" ry="8" fill="#e8f1fb" stroke="#3a7bc8" stroke-width="1.6"/>
+<text x="460.0" y="426.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1f27" text-anchor="middle">clinical.*</text>
+<text x="460.0" y="442.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="middle">Patient, Encounter, Condition,</text>
+<text x="460.0" y="458.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="middle">Procedure, Medication, Observation</text>
+<rect x="600" y="390" width="150" height="96" rx="8" ry="8" fill="#e8f1fb" stroke="#3a7bc8" stroke-width="1.6"/>
+<text x="675.0" y="426.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1f27" text-anchor="middle">reference.*</text>
+<text x="675.0" y="443.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#4a5261" text-anchor="middle">Facility, Provider,</text>
+<text x="675.0" y="459.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#4a5261" text-anchor="middle">Payer</text>
+<rect x="770" y="390" width="170" height="96" rx="8" ry="8" fill="#e8f1fb" stroke="#3a7bc8" stroke-width="1.6"/>
+<text x="855.0" y="426.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1f27" text-anchor="middle">population.*</text>
+<text x="855.0" y="442.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="middle">RuralUrban, USDAIncome,</text>
+<text x="855.0" y="458.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="middle">usda_job, USDAPeople</text>
+<rect x="960" y="390" width="160" height="96" rx="8" ry="8" fill="#e8f1fb" stroke="#3a7bc8" stroke-width="1.6"/>
+<text x="1040.0" y="426.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1f27" text-anchor="middle">quarantine.*</text>
+<text x="1040.0" y="442.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="middle">one table per entity:</text>
+<text x="1040.0" y="458.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="middle">RuleID, Severity, Reason</text>
+<rect x="1140" y="390" width="220" height="52" rx="8" ry="8" fill="#f1f2f4" stroke="#8a9099" stroke-width="1.4"/>
+<text x="1250.0" y="412.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1f27" text-anchor="middle">HP_06_02 DQ audit</text>
+<text x="1250.0" y="428.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="#4a5261" text-anchor="middle">same PipelineRunId, after the load</text>
+<rect x="1140" y="462" width="220" height="60" rx="8" ry="8" fill="#e8f1fb" stroke="#3a7bc8" stroke-width="1.6"/>
+<text x="1250.0" y="488.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1f27" text-anchor="middle">dq.*</text>
+<text x="1250.0" y="504.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="middle">Rule, Run, Result, RejectedRecord</text>
+<path d="M 760.0 300.0 L 760.0 318.0 L 460.0 318.0 L 460.0 390.0" fill="none" stroke="#5b6470" stroke-width="1.4" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 860.0 300.0 L 860.0 318.0 L 675.0 318.0 L 675.0 390.0" fill="none" stroke="#5b6470" stroke-width="1.4" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 960.0 300.0 L 960.0 318.0 L 855.0 318.0 L 855.0 390.0" fill="none" stroke="#5b6470" stroke-width="1.4" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 1060.0 300.0 L 1060.0 318.0 L 1040.0 318.0 L 1040.0 390.0" fill="none" stroke="#5b6470" stroke-width="1.4" stroke-linejoin="round" stroke-dasharray="5,4" marker-end="url(#arrow)"/>
+<rect x="1001.0" y="340" width="86.0" height="14" fill="#ffffff" fill-opacity="0.92"/>
+<text x="1044.0" y="351" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="#5b6470" text-anchor="middle">rejected rows</text>
+<path d="M 1120.0 408.0 L 1140.0 412.0" fill="none" stroke="#5b6470" stroke-width="1.4" stroke-linejoin="round" stroke-dasharray="5,4" marker-end="url(#arrow)"/>
+<path d="M 1250.0 442.0 L 1250.0 462.0" fill="none" stroke="#5b6470" stroke-width="1.4" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="500" y="628" width="420" height="56" rx="8" ry="8" fill="#f1f2f4" stroke="#8a9099" stroke-width="1.4"/>
+<text x="710.0" y="652.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1f27" text-anchor="middle">HP_07_02 / HP_07_03 T-SQL</text>
+<text x="710.0" y="668.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="middle">cross-database reads from the Silver lakehouse</text>
+<path d="M 460.0 486.0 L 460.0 610.0 L 620.0 610.0 L 620.0 628.0" fill="none" stroke="#5b6470" stroke-width="1.4" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 675.0 486.0 L 675.0 610.0 L 710.0 610.0 L 710.0 628.0" fill="none" stroke="#5b6470" stroke-width="1.4" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 855.0 486.0 L 855.0 610.0 L 800.0 610.0 L 800.0 628.0" fill="none" stroke="#5b6470" stroke-width="1.4" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="20" y="718" width="1360" height="180" rx="10" ry="10" fill="#f8f9fb" stroke="#d5d9e0" stroke-width="1.2"/>
+<text x="36" y="742" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="600" fill="#7a8290" letter-spacing="0.8">GOLD  -  HP_03_WH_HEALTHANALYTICS  (WAREHOUSE, T-SQL)</text>
+<rect x="40" y="754" width="280" height="130" rx="8" ry="8" fill="#ffffff" stroke="#c9ced6" stroke-width="1.0"/>
+<text x="54" y="791.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1f27" text-anchor="start">Rule: business-ready star schema</text>
+<text x="54" y="807.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="start">Surrogate keys. SCD Type 2 on Patient,</text>
+<text x="54" y="823.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="start">Facility, Provider and Payer. Additive</text>
+<text x="54" y="839.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="start">measures, validated grain, update-then-</text>
+<text x="54" y="855.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="start">insert loads, 28 Gold DQ checks per run.</text>
+<rect x="340" y="770" width="330" height="96" rx="8" ry="8" fill="#e8f1fb" stroke="#3a7bc8" stroke-width="1.6"/>
+<text x="505.0" y="806.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1f27" text-anchor="middle">dim.*</text>
+<text x="505.0" y="822.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="middle">DimDate, DimPatient, DimFacility, DimProvider,</text>
+<text x="505.0" y="838.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="middle">DimPayer, DimDiagnosis, DimMedication, DimProcedure</text>
+<rect x="720" y="770" width="340" height="96" rx="8" ry="8" fill="#e8f1fb" stroke="#3a7bc8" stroke-width="1.6"/>
+<text x="890.0" y="798.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1f27" text-anchor="middle">fact.*</text>
+<text x="890.0" y="814.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="middle">FactEncounter, FactCondition, FactMedication,</text>
+<text x="890.0" y="830.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="middle">FactProcedure, FactObservation, FactReadmission,</text>
+<text x="890.0" y="846.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="middle">FactFacilityDaily</text>
+<rect x="1110" y="770" width="250" height="96" rx="8" ry="8" fill="#ffffff" stroke="#8a9099" stroke-width="1.4"/>
+<text x="1235.0" y="798.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="600" fill="#1b1f27" text-anchor="middle">control tables</text>
+<text x="1235.0" y="814.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="middle">metadata.SourceConfig</text>
+<text x="1235.0" y="830.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="middle">etl.PipelineRun</text>
+<text x="1235.0" y="846.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#4a5261" text-anchor="middle">stg.DimPatient</text>
+<path d="M 630.0 684.0 L 630.0 702.0 L 505.0 702.0 L 505.0 770.0" fill="none" stroke="#5b6470" stroke-width="1.4" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="523.0" y="686" width="104.0" height="14" fill="#ffffff" fill-opacity="0.92"/>
+<text x="575.0" y="697" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="#5b6470" text-anchor="middle">dimensions first</text>
+<path d="M 790.0 684.0 L 790.0 702.0 L 890.0 702.0 L 890.0 770.0" fill="none" stroke="#5b6470" stroke-width="1.4" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="796.0" y="686" width="68.0" height="14" fill="#ffffff" fill-opacity="0.92"/>
+<text x="830.0" y="697" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="#5b6470" text-anchor="middle">then facts</text>
+<path d="M 670.0 818.0 L 720.0 818.0" fill="none" stroke="#5b6470" stroke-width="1.4" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="649.0" y="802.0" width="92.0" height="14" fill="#ffffff" fill-opacity="0.92"/>
+<text x="695.0" y="813.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="11" fill="#5b6470" text-anchor="middle">surrogate keys</text>
+<rect x="24" y="912" width="34" height="20" rx="5" fill="#e8f1fb" stroke="#3a7bc8" stroke-width="1.6"/>
+<text x="66" y="926.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#4a5261">Delta or warehouse tables</text>
+<rect x="259.5" y="912" width="34" height="20" rx="5" fill="#f1f2f4" stroke="#8a9099" stroke-width="1.4"/>
+<text x="301.5" y="926.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#4a5261">Notebook</text>
+<rect x="387.9" y="912" width="34" height="20" rx="5" fill="#ffffff" stroke="#8a9099" stroke-width="1.4"/>
+<text x="429.9" y="926.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#4a5261">Files and control tables</text>
+<rect x="617.0999999999999" y="912" width="34" height="20" rx="5" fill="#ffffff" stroke="#c9ced6" stroke-width="1.0"/>
+<text x="659.0999999999999" y="926.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#4a5261">Layer rule</text>
+<path d="M 760 922 L 794 922" stroke="#5b6470" stroke-width="1.4" marker-end="url(#arrow)"/>
+<text x="802" y="926.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#4a5261">Load</text>
+<path d="M 860 922 L 894 922" stroke="#5b6470" stroke-width="1.4" stroke-dasharray="5,4" marker-end="url(#arrow)"/>
+<text x="902" y="926.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#4a5261">Rejected rows / audit</text>
+</svg>

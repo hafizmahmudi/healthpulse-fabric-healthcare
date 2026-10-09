@@ -1,0 +1,52 @@
+flowchart LR
+    subgraph SRC[Sources]
+        S1[Synthea clinical CSV and Parquet]
+        S2[USDA county data: rural-urban, income, jobs, people]
+    end
+
+    subgraph ING[Ingestion - Fabric Data Factory]
+        P0[HP_05_01 download raw files]
+        P1[HP_04_PL_Health_Master<br/>Lookup metadata.SourceConfig -> ForEach source]
+        P2[HP_05_02 metadata-driven loader<br/>Full or Incremental]
+    end
+
+    subgraph BRZ[HP_01_LH_Health_Bronze]
+        B1[(bronze.* Delta tables<br/>raw + ingestion metadata)]
+    end
+
+    subgraph SLV[HP_02_LH_Health_Silver]
+        T1[HP_06_01 PySpark transform<br/>rename, type, dedupe, block]
+        T2[HP_06_02 DQ audit]
+        B2[(clinical.* reference.* population.*)]
+        Q[(quarantine.*)]
+        D1[(dq.Rule / Run / Result / RejectedRecord)]
+    end
+
+    subgraph GLD[HP_03_WH_HealthAnalytics]
+        G1[HP_07_01 structure]
+        G2[HP_07_02 dimensions + SCD2]
+        G3[HP_07_03 facts + readmissions]
+        B3[(dim.* fact.* star schema)]
+    end
+
+    subgraph DQW[HP_09_WH_DataQuality]
+        D2[(Gold DQ runs and checks)]
+    end
+
+    subgraph SRV[Consumption]
+        SM[HP_10_SM_HealthAnalytics<br/>Direct Lake semantic model]
+        RPT[HP_11_RPT_HealthPulse<br/>7-page Power BI report]
+        APP[HP_12_APP_HealthPulse<br/>Fabric App + data function]
+    end
+
+    S1 --> P0 --> P1
+    S2 --> P0
+    P1 --> P2 --> B1
+    B1 --> T1 --> B2
+    T1 --> Q
+    T2 --> D1
+    B2 --> G1 --> G2 --> G3 --> B3
+    G3 -. HP_07_04 checks .-> D2
+    B3 --> SM --> RPT
+    D1 --> SM
+    SM --> APP

@@ -1,0 +1,17 @@
+flowchart LR
+    subgraph DEV[HealthPulse-DEV]
+        D1[2 lakehouses]
+        D2[2 warehouses]
+        D3[9 notebooks]
+        D4[3 pipelines]
+        D5[semantic model + report]
+        D6[Fabric App + data function]
+    end
+    subgraph TEST[HealthPulse-TEST]
+        T1[Fabric App + data function]
+    end
+    subgraph PROD[HealthPulse-PROD]
+        P1[Fabric App + data function]
+    end
+    DEV -- "HP_DP_HealthPulse stage 1" --> TEST -- "stage 2" --> PROD
+    note["Fabric deployment pipeline HP_DP_HealthPulse:<br/>Development -> Test -> Production.<br/>Data items are promoted as the solution stabilizes;<br/>the app layer is already deployed to all three."]

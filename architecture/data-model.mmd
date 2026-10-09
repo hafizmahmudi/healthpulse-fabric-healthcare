@@ -1,0 +1,167 @@
+erDiagram
+    DimDate ||--o{ FactEncounter : "DateKey"
+    DimPatient ||--o{ FactEncounter : "PatientKey"
+    DimFacility ||--o{ FactEncounter : "FacilityKey"
+    DimProvider ||--o{ FactEncounter : "ProviderKey"
+    DimPayer ||--o{ FactEncounter : "PayerKey"
+
+    FactEncounter ||--o{ FactCondition : "EncounterKey"
+    FactEncounter ||--o{ FactMedication : "EncounterKey"
+    FactEncounter ||--o{ FactProcedure : "EncounterKey"
+    FactEncounter ||--o{ FactObservation : "EncounterKey"
+    FactEncounter ||--o| FactReadmission : "IndexEncounterKey"
+    FactEncounter ||--o{ FactReadmission : "ReadmissionEncounterKey"
+
+    DimPatient ||--o{ FactCondition : "PatientKey"
+    DimPatient ||--o{ FactMedication : "PatientKey"
+    DimPatient ||--o{ FactProcedure : "PatientKey"
+    DimPatient ||--o{ FactObservation : "PatientKey"
+    DimPatient ||--o{ FactReadmission : "PatientKey"
+
+    DimDiagnosis ||--o{ FactCondition : "DiagnosisKey"
+    DimMedication ||--o{ FactMedication : "MedicationKey"
+    DimProcedure ||--o{ FactProcedure : "ProcedureKey"
+    DimDate ||--o{ FactCondition : "StartDateKey, StopDateKey"
+    DimDate ||--o{ FactMedication : "StartDateKey, StopDateKey"
+    DimDate ||--o{ FactProcedure : "ProcedureDateKey"
+    DimDate ||--o{ FactObservation : "DateKey"
+    DimDate ||--o{ FactReadmission : "DateKey"
+    DimDate ||--o{ FactFacilityDaily : "DateKey"
+    DimFacility ||--o{ FactFacilityDaily : "FacilityKey"
+    DimFacility ||--o{ DimProvider : "FacilityID (natural key)"
+
+    DimDate {
+        int DateKey PK
+        date FullDate
+        int YearNumber
+        int MonthNumber
+        string MonthName
+        string QuarterName
+        string DayName
+        bit IsWeekend
+    }
+    DimPatient {
+        bigint PatientKey PK
+        string PatientID UK
+        string Gender
+        string Race
+        string Ethnicity
+        int Age
+        string AgeGroup
+        string MaritalStatus "SCD2 tracked"
+        datetime ValidFrom
+        datetime ValidTo
+        bit IsCurrent
+    }
+    DimFacility {
+        bigint FacilityKey PK
+        string FacilityID UK
+        string FacilityName
+        string City
+        string State
+        decimal Revenue
+        datetime ValidFrom
+        datetime ValidTo
+        bit IsCurrent
+    }
+    DimProvider {
+        bigint ProviderKey PK
+        string ProviderID UK
+        string FacilityID FK
+        string Specialty
+        datetime ValidFrom
+        datetime ValidTo
+        bit IsCurrent
+    }
+    DimPayer {
+        bigint PayerKey PK
+        string PayerID UK
+        string PayerName
+        string Ownership
+        datetime ValidFrom
+        datetime ValidTo
+        bit IsCurrent
+    }
+    DimDiagnosis {
+        bigint DiagnosisKey PK
+        string DiagnosisCode UK
+        string DiagnosisDescription
+    }
+    DimMedication {
+        bigint MedicationKey PK
+        string MedicationCode UK
+        string MedicationDescription
+    }
+    DimProcedure {
+        bigint ProcedureKey PK
+        string ProcedureCode UK
+        string ProcedureDescription
+    }
+    FactEncounter {
+        bigint EncounterKey PK
+        string EncounterID UK
+        bigint PatientKey FK
+        int DateKey FK
+        bigint FacilityKey FK
+        bigint ProviderKey FK
+        bigint PayerKey FK
+        string EncounterDescription
+        string ReasonDescription
+        decimal TotalClaimCost
+        int EncounterCount
+    }
+    FactCondition {
+        bigint ConditionFactKey PK
+        bigint PatientKey FK
+        bigint EncounterKey FK
+        bigint DiagnosisKey FK
+        int StartDateKey FK
+        int StopDateKey FK
+        int ConditionCount
+    }
+    FactMedication {
+        bigint MedicationFactKey PK
+        bigint PatientKey FK
+        bigint EncounterKey FK
+        bigint MedicationKey FK
+        int StartDateKey FK
+        int StopDateKey FK
+        int MedicationCount
+    }
+    FactProcedure {
+        bigint ProcedureFactKey PK
+        bigint PatientKey FK
+        bigint EncounterKey FK
+        bigint ProcedureKey FK
+        int ProcedureDateKey FK
+        int ProcedureCount
+    }
+    FactObservation {
+        bigint ObservationFactKey PK
+        bigint PatientKey FK
+        bigint EncounterKey FK
+        int DateKey FK
+        string ObservationCode
+        string ObservationValue
+        float NumericValue
+        string Units
+    }
+    FactReadmission {
+        bigint ReadmissionKey PK
+        bigint PatientKey FK
+        bigint IndexEncounterKey FK
+        bigint ReadmissionEncounterKey FK
+        int DateKey FK
+        date DischargeDate
+        date ReadmissionDate
+        int DaysToReadmission
+        bit IsReadmission30Day
+    }
+    FactFacilityDaily {
+        bigint FacilityDailyKey PK
+        int DateKey FK
+        bigint FacilityKey FK
+        bigint EncounterCount
+        bigint ReadmissionCount
+        decimal TotalEncounterCost
+    }

@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Environments
+.env
+.venv/
+venv/
+
+# Secrets and credentials (never commit)
+*.key
+*.pem
+secrets.*
+credentials.*
+*.pfx
+
+# Local data and extracts
+data/
+*.parquet
+*.csv
+*.gz
+*.zip
+
+# Power BI local artifacts
+*.pbix
+.pbi/
+*.abf
+
+# OS and editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Temporary
+_tmp/
+temp/
+output/

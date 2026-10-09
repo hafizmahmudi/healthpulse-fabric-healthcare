@@ -1,0 +1,22 @@
+flowchart LR
+    A[(Bronze table<br/>one entity)] --> B[Rename, cast, standardize]
+    B --> C[Build deterministic ID<br/>SHA-256 of business columns<br/>when the source has no ID]
+    C --> D[keep_latest<br/>newest ingestion per key]
+    D --> E{Blocking rules<br/>DQ001-DQ010 and<br/>DQ_ENTITY validation}
+    E -- valid --> F[Referential check<br/>PatientID exists in Silver Patient<br/>DQ004 / DQ007]
+    F -- valid --> G[(Silver table<br/>Delta MERGE on key)]
+    E -- invalid --> H[(quarantine.Entity<br/>RuleID, Severity, FailureReason,<br/>RunID, FailureTimestamp)]
+    F -- orphan --> H
+
+    G --> I[HP_06_02 audit<br/>same PipelineRunId]
+    H --> I
+    I --> J[(dq.Result<br/>one row per applicable rule:<br/>RecordsChecked, RecordsFailed, FailurePct)]
+    I --> K[(dq.RejectedRecord<br/>central JSON copy of each rejected row)]
+    I --> L[(dq.Run<br/>TotalRecords, ValidRecords,<br/>RejectedRecords, DQScore)]
+    J --> M[HP_10 semantic model<br/>DQRun, DQResult, DQRule tables]
+    L --> M
+    M --> N[HP_11 report<br/>Data Quality & Pipeline Health page]
+
+    G --> O[HP_07 Gold loads]
+    O --> P[HP_07_04 Gold checks<br/>grain, completeness, uniqueness,<br/>SCD2, referential integrity]
+    P --> Q[(HP_09_WH_DataQuality<br/>SilverToGoldDQRun / Result)]

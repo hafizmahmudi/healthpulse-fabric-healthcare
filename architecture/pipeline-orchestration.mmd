@@ -1,0 +1,27 @@
+flowchart TB
+    subgraph M[HP_04_PL_Health_Master]
+        M0[Notebook: ingestion utilities] --> M1[Lookup: metadata.SourceConfig<br/>WHERE IsActive = 1]
+        M1 --> M2{ForEach source<br/>sequential}
+        M2 --> M3["Notebook HP_05_02_NB_MetadataIngestion<br/>params: SourceId, SourceName, SourceEntity,<br/>SourcePath, SourceFormat, TargetTable,<br/>LoadType, WatermarkColumn, LastWatermark, PipelineRunId"]
+        M3 --> M4["Script: INSERT etl.PipelineRun<br/>RowsRead / RowsWritten from notebook exit JSON"]
+        M4 --> M5["Notebook HP_06_01_NB_BronzeToSilver<br/>params: PipelineRunId, EntityName, SourceName"]
+        M5 --> M2
+        M2 --> M6[Notebook HP_08 Delta optimization]
+    end
+
+    subgraph S[HP_06_03_PL_BronzeToSilver]
+        S1[Lookup: metadata.SourceConfig] --> S2{ForEach entity: load}
+        S2 --> S3[Notebook HP_06_01_NB_BronzeToSilver]
+        S3 --> S2
+        S2 --> S4{ForEach entity: audit}
+        S4 --> S5[Notebook HP_06_02_NB_BronzeToSilver_DQ<br/>same PipelineRunId]
+        S5 --> S4
+    end
+
+    subgraph G[HP_07_05_PL_SilverToGold]
+        G1[Notebook HP_07_01 structure] --> G2[Notebook HP_07_02 load dimensions]
+        G2 --> G3[Notebook HP_07_03 load facts]
+        G3 --> G4[Notebook HP_07_04 Gold DQ -> HP_09_WH_DataQuality]
+    end
+
+    M --> S --> G

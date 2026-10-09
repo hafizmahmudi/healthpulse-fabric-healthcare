@@ -1,0 +1,36 @@
+flowchart TB
+    subgraph Bronze[Bronze - HP_01_LH_Health_Bronze]
+        direction LR
+        BF[Files/synthea/raw and extracted<br/>original downloads, CSV copies]
+        BT[(bronze.bronze_patients, bronze_encounters, ... 13 tables)]
+        BN["Rule: keep the source shape.<br/>Add _ingestion_timestamp, _source_system,<br/>_source_entity, _pipeline_run_id"]
+        BF --> BT
+    end
+
+    subgraph Silver[Silver - HP_02_LH_Health_Silver]
+        direction LR
+        ST[(clinical.Patient, Encounter, Condition,<br/>Procedure, Medication, Observation)]
+        SR[(reference.Facility, Provider, Payer)]
+        SP[(population.RuralUrban, USDAIncome,<br/>usda_job, USDAPeople)]
+        SQ[(quarantine.* one table per entity)]
+        SD[(dq.Rule, dq.Run, dq.Result,<br/>dq.RejectedRecord)]
+        SN["Rule: one clean row per business key.<br/>Typed columns, standard names, deterministic IDs,<br/>blocking rules, MERGE upsert"]
+    end
+
+    subgraph Gold[Gold - HP_03_WH_HealthAnalytics]
+        direction LR
+        GD[(dim.DimDate, DimPatient, DimFacility, DimProvider,<br/>DimPayer, DimDiagnosis, DimMedication, DimProcedure)]
+        GF[(fact.FactEncounter, FactCondition, FactMedication,<br/>FactProcedure, FactObservation, FactReadmission, FactFacilityDaily)]
+        GO[(metadata.SourceConfig, etl.PipelineRun, stg.DimPatient)]
+        GN["Rule: business-ready star schema.<br/>Surrogate keys, SCD Type 2,<br/>additive measures, validated grain"]
+    end
+
+    BT -- "HP_06_01 PySpark<br/>per entity" --> ST
+    BT --> SR
+    BT --> SP
+    BT -. rejected rows .-> SQ
+    ST -. "HP_06_02 audit" .-> SD
+    ST -- "HP_07_02 / HP_07_03 T-SQL<br/>cross-database reads" --> GD
+    SR --> GD
+    ST --> GF
+    GD --> GF
