@@ -20,3 +20,14 @@ flowchart LR
     G --> O[HP_07 Gold loads]
     O --> P[HP_07_04 Gold checks<br/>grain, completeness, uniqueness,<br/>SCD2, referential integrity]
     P --> Q[(HP_09_WH_DataQuality<br/>SilverToGoldDQRun / Result)]
+
+    classDef code fill:#f3f4f6,stroke:#6b7280,color:#111827
+    classDef store fill:#dbeafe,stroke:#1d4ed8,color:#111827
+    classDef gate fill:#fffbeb,stroke:#d97706,color:#111827
+    classDef reject fill:#fee2e2,stroke:#b91c1c,color:#111827
+    classDef serve fill:#dbeafe,stroke:#1d4ed8,stroke-width:2px,color:#111827
+    class B,C,D,I,O,P code
+    class A,G,J,K,L,Q store
+    class E,F gate
+    class H reject
+    class M,N serve

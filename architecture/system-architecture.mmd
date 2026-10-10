@@ -6,7 +6,7 @@ flowchart LR
 
     subgraph ING[Ingestion - Fabric Data Factory]
         P0[HP_05_01 download raw files]
-        P1[HP_04_PL_Health_Master<br/>Lookup metadata.SourceConfig -> ForEach source]
+        P1[HP_04_PL_Health_Master<br/>Lookup metadata.SourceConfig, ForEach source]
         P2[HP_05_02 metadata-driven loader<br/>Full or Incremental]
     end
 
@@ -44,9 +44,18 @@ flowchart LR
     P1 --> P2 --> B1
     B1 --> T1 --> B2
     T1 --> Q
-    T2 --> D1
+    B2 --> T2 --> D1
     B2 --> G1 --> G2 --> G3 --> B3
     G3 -. HP_07_04 checks .-> D2
     B3 --> SM --> RPT
     D1 --> SM
     SM --> APP
+
+    classDef external fill:#ffffff,stroke:#6b7280,stroke-dasharray:4 3,color:#111827
+    classDef code fill:#f3f4f6,stroke:#6b7280,color:#111827
+    classDef store fill:#dbeafe,stroke:#1d4ed8,color:#111827
+    classDef serve fill:#dbeafe,stroke:#1d4ed8,stroke-width:2px,color:#111827
+    class S1,S2 external
+    class P0,P1,P2,T1,T2,G1,G2,G3 code
+    class B1,B2,Q,D1,B3,D2 store
+    class SM,RPT,APP serve

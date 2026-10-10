@@ -1,6 +1,5 @@
 flowchart TB
     subgraph Bronze[Bronze - HP_01_LH_Health_Bronze]
-        direction LR
         BF[Files/synthea/raw and extracted<br/>original downloads, CSV copies]
         BT[(bronze.bronze_patients, bronze_encounters, ... 13 tables)]
         BN["Rule: keep the source shape.<br/>Add _ingestion_timestamp, _source_system,<br/>_source_entity, _pipeline_run_id"]
@@ -8,7 +7,6 @@ flowchart TB
     end
 
     subgraph Silver[Silver - HP_02_LH_Health_Silver]
-        direction LR
         ST[(clinical.Patient, Encounter, Condition,<br/>Procedure, Medication, Observation)]
         SR[(reference.Facility, Provider, Payer)]
         SP[(population.RuralUrban, USDAIncome,<br/>usda_job, USDAPeople)]
@@ -18,7 +16,6 @@ flowchart TB
     end
 
     subgraph Gold[Gold - HP_03_WH_HealthAnalytics]
-        direction LR
         GD[(dim.DimDate, DimPatient, DimFacility, DimProvider,<br/>DimPayer, DimDiagnosis, DimMedication, DimProcedure)]
         GF[(fact.FactEncounter, FactCondition, FactMedication,<br/>FactProcedure, FactObservation, FactReadmission, FactFacilityDaily)]
         GO[(metadata.SourceConfig, etl.PipelineRun, stg.DimPatient)]
@@ -34,3 +31,10 @@ flowchart TB
     SR --> GD
     ST --> GF
     GD --> GF
+
+    classDef files fill:#ffffff,stroke:#6b7280,stroke-dasharray:4 3,color:#111827
+    classDef store fill:#dbeafe,stroke:#1d4ed8,color:#111827
+    classDef note fill:#fffbeb,stroke:#d97706,color:#111827
+    class BF files
+    class BT,ST,SR,SP,SQ,SD,GD,GF,GO store
+    class BN,SN,GN note

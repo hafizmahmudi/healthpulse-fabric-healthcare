@@ -14,4 +14,13 @@ flowchart LR
         P1[Fabric App + data function]
     end
     DEV -- "HP_DP_HealthPulse stage 1" --> TEST -- "stage 2" --> PROD
-    note["Fabric deployment pipeline HP_DP_HealthPulse:<br/>Development -> Test -> Production.<br/>Data items are promoted as the solution stabilizes;<br/>the app layer is already deployed to all three."]
+    note["Fabric deployment pipeline HP_DP_HealthPulse:<br/>Development, Test, Production.<br/>Data items are promoted as the solution stabilizes;<br/>the app layer is already deployed to all three."]
+
+    classDef store fill:#dbeafe,stroke:#1d4ed8,color:#111827
+    classDef code fill:#f3f4f6,stroke:#6b7280,color:#111827
+    classDef app fill:#dbeafe,stroke:#1d4ed8,stroke-width:2px,color:#111827
+    classDef note fill:#fffbeb,stroke:#d97706,color:#111827
+    class D1,D2,D5 store
+    class D3,D4 code
+    class D6,T1,P1 app
+    class note note

@@ -21,7 +21,14 @@ flowchart TB
     subgraph G[HP_07_05_PL_SilverToGold]
         G1[Notebook HP_07_01 structure] --> G2[Notebook HP_07_02 load dimensions]
         G2 --> G3[Notebook HP_07_03 load facts]
-        G3 --> G4[Notebook HP_07_04 Gold DQ -> HP_09_WH_DataQuality]
+        G3 --> G4[Notebook HP_07_04 Gold DQ, writes HP_09_WH_DataQuality]
     end
 
     M --> S --> G
+
+    classDef code fill:#f3f4f6,stroke:#6b7280,color:#111827
+    classDef control fill:#dbeafe,stroke:#1d4ed8,color:#111827
+    classDef loop fill:#fffbeb,stroke:#d97706,color:#111827
+    class M0,M3,M5,M6,S3,S5,G1,G2,G3,G4 code
+    class M1,M4,S1 control
+    class M2,S2,S4 loop
