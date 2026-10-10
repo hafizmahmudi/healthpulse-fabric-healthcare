@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="assets/healthpulse-icon.png" alt="HealthPulse" width="96" />
-</p>
-
 <h1 align="center">HealthPulse</h1>
 
 <p align="center"><strong>End-to-end healthcare data engineering and analytics platform built on Microsoft Fabric</strong></p>
