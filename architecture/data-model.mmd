@@ -1,167 +1,76 @@
-erDiagram
-    DimDate ||--o{ FactEncounter : "DateKey"
-    DimPatient ||--o{ FactEncounter : "PatientKey"
-    DimFacility ||--o{ FactEncounter : "FacilityKey"
-    DimProvider ||--o{ FactEncounter : "ProviderKey"
-    DimPayer ||--o{ FactEncounter : "PayerKey"
+%%{init: {"flowchart": {"curve": "linear", "wrappingWidth": 360, "nodeSpacing": 30, "rankSpacing": 60}}}%%
+flowchart TB
+    subgraph DIMS["CONFORMED DIMENSIONS - dim schema, surrogate keys"]
+        DimDate["<b>DimDate</b><br/><small>DateKey, FullDate, Year, Month,<br/>Quarter, DayName, IsWeekend</small>"]
+        DimPatient["<b>DimPatient</b> &nbsp;SCD2<br/><small>Gender, Race, Ethnicity, Age,<br/>AgeGroup, MaritalStatus</small>"]
+        DimFacility["<b>DimFacility</b> &nbsp;SCD2<br/><small>FacilityName, City, State,<br/>Revenue</small>"]
+        DimProvider["<b>DimProvider</b> &nbsp;SCD2<br/><small>Specialty, FacilityID</small>"]
+        DimPayer["<b>DimPayer</b> &nbsp;SCD2<br/><small>PayerName, Ownership</small>"]
+    end
 
-    FactEncounter ||--o{ FactCondition : "EncounterKey"
-    FactEncounter ||--o{ FactMedication : "EncounterKey"
-    FactEncounter ||--o{ FactProcedure : "EncounterKey"
-    FactEncounter ||--o{ FactObservation : "EncounterKey"
-    FactEncounter ||--o| FactReadmission : "IndexEncounterKey"
-    FactEncounter ||--o{ FactReadmission : "ReadmissionEncounterKey"
+    subgraph FACTS["FACTS - fact schema, additive measures"]
+        FactEncounter["<b>FactEncounter</b><br/><small>grain: one encounter. PatientKey, DateKey, FacilityKey,<br/>ProviderKey, PayerKey, TotalClaimCost, EncounterCount</small>"]
+        NoteEnc["one row per encounter<br/>resolves five keys with SCD2-aware lookups"]
+        FactCondition["<b>FactCondition</b><br/><small>per condition on an encounter<br/>DiagnosisKey, Start/StopDateKey</small>"]
+        FactMedication["<b>FactMedication</b><br/><small>per medication order<br/>MedicationKey, Start/StopDateKey</small>"]
+        FactProcedure["<b>FactProcedure</b><br/><small>per procedure<br/>ProcedureKey, ProcedureDateKey</small>"]
+        FactObservation["<b>FactObservation</b><br/><small>per observation<br/>code, value, units, 62.7M rows</small>"]
+        FactReadmission["<b>FactReadmission</b><br/><small>derived: index + readmission encounter,<br/>DaysToReadmission, IsReadmission30Day</small>"]
+        FactFacilityDaily["<b>FactFacilityDaily</b><br/><small>derived: facility x day<br/>counts and cost</small>"]
+    end
 
-    DimPatient ||--o{ FactCondition : "PatientKey"
-    DimPatient ||--o{ FactMedication : "PatientKey"
-    DimPatient ||--o{ FactProcedure : "PatientKey"
-    DimPatient ||--o{ FactObservation : "PatientKey"
-    DimPatient ||--o{ FactReadmission : "PatientKey"
+    subgraph CODES["CODE DIMENSIONS - used by one fact each"]
+        DimDiagnosis["<b>DimDiagnosis</b><br/><small>DiagnosisCode, Description</small>"]
+        DimMedication["<b>DimMedication</b><br/><small>MedicationCode, Description</small>"]
+        DimProcedure["<b>DimProcedure</b><br/><small>ProcedureCode, Description</small>"]
+        NoteRoles["DimDate also plays the Start, Stop, Procedure and Discharge date roles<br/>on the detail facts. DimProvider carries FacilityID back to DimFacility."]
+    end
 
-    DimDiagnosis ||--o{ FactCondition : "DiagnosisKey"
-    DimMedication ||--o{ FactMedication : "MedicationKey"
-    DimProcedure ||--o{ FactProcedure : "ProcedureKey"
-    DimDate ||--o{ FactCondition : "StartDateKey, StopDateKey"
-    DimDate ||--o{ FactMedication : "StartDateKey, StopDateKey"
-    DimDate ||--o{ FactProcedure : "ProcedureDateKey"
-    DimDate ||--o{ FactObservation : "DateKey"
-    DimDate ||--o{ FactReadmission : "DateKey"
-    DimDate ||--o{ FactFacilityDaily : "DateKey"
-    DimFacility ||--o{ FactFacilityDaily : "FacilityKey"
-    DimFacility ||--o{ DimProvider : "FacilityID (natural key)"
+    subgraph LEGEND["Legend"]
+        LF["Fact table"]
+        LD["Dimension"]
+        LS["SCD2 dimension<br/><small>ValidFrom, ValidTo, IsCurrent</small>"]
+        LA["Arrow: foreign key, pointing at the table that holds the key"]
+    end
 
-    DimDate {
-        int DateKey PK
-        date FullDate
-        int YearNumber
-        int MonthNumber
-        string MonthName
-        string QuarterName
-        string DayName
-        bit IsWeekend
-    }
-    DimPatient {
-        bigint PatientKey PK
-        string PatientID UK
-        string Gender
-        string Race
-        string Ethnicity
-        int Age
-        string AgeGroup
-        string MaritalStatus "SCD2 tracked"
-        datetime ValidFrom
-        datetime ValidTo
-        bit IsCurrent
-    }
-    DimFacility {
-        bigint FacilityKey PK
-        string FacilityID UK
-        string FacilityName
-        string City
-        string State
-        decimal Revenue
-        datetime ValidFrom
-        datetime ValidTo
-        bit IsCurrent
-    }
-    DimProvider {
-        bigint ProviderKey PK
-        string ProviderID UK
-        string FacilityID FK
-        string Specialty
-        datetime ValidFrom
-        datetime ValidTo
-        bit IsCurrent
-    }
-    DimPayer {
-        bigint PayerKey PK
-        string PayerID UK
-        string PayerName
-        string Ownership
-        datetime ValidFrom
-        datetime ValidTo
-        bit IsCurrent
-    }
-    DimDiagnosis {
-        bigint DiagnosisKey PK
-        string DiagnosisCode UK
-        string DiagnosisDescription
-    }
-    DimMedication {
-        bigint MedicationKey PK
-        string MedicationCode UK
-        string MedicationDescription
-    }
-    DimProcedure {
-        bigint ProcedureKey PK
-        string ProcedureCode UK
-        string ProcedureDescription
-    }
-    FactEncounter {
-        bigint EncounterKey PK
-        string EncounterID UK
-        bigint PatientKey FK
-        int DateKey FK
-        bigint FacilityKey FK
-        bigint ProviderKey FK
-        bigint PayerKey FK
-        string EncounterDescription
-        string ReasonDescription
-        decimal TotalClaimCost
-        int EncounterCount
-    }
-    FactCondition {
-        bigint ConditionFactKey PK
-        bigint PatientKey FK
-        bigint EncounterKey FK
-        bigint DiagnosisKey FK
-        int StartDateKey FK
-        int StopDateKey FK
-        int ConditionCount
-    }
-    FactMedication {
-        bigint MedicationFactKey PK
-        bigint PatientKey FK
-        bigint EncounterKey FK
-        bigint MedicationKey FK
-        int StartDateKey FK
-        int StopDateKey FK
-        int MedicationCount
-    }
-    FactProcedure {
-        bigint ProcedureFactKey PK
-        bigint PatientKey FK
-        bigint EncounterKey FK
-        bigint ProcedureKey FK
-        int ProcedureDateKey FK
-        int ProcedureCount
-    }
-    FactObservation {
-        bigint ObservationFactKey PK
-        bigint PatientKey FK
-        bigint EncounterKey FK
-        int DateKey FK
-        string ObservationCode
-        string ObservationValue
-        float NumericValue
-        string Units
-    }
-    FactReadmission {
-        bigint ReadmissionKey PK
-        bigint PatientKey FK
-        bigint IndexEncounterKey FK
-        bigint ReadmissionEncounterKey FK
-        int DateKey FK
-        date DischargeDate
-        date ReadmissionDate
-        int DaysToReadmission
-        bit IsReadmission30Day
-    }
-    FactFacilityDaily {
-        bigint FacilityDailyKey PK
-        int DateKey FK
-        bigint FacilityKey FK
-        bigint EncounterCount
-        bigint ReadmissionCount
-        decimal TotalEncounterCost
-    }
+    DimDate --> FactEncounter
+    DimPatient --> FactEncounter
+    DimFacility --> FactEncounter
+    DimProvider --> FactEncounter
+    DimPayer --> FactEncounter
+    DimPayer ~~~ NoteEnc
+
+    FactEncounter -- "PatientKey and DateKey repeat<br/>on every detail fact" --> FactCondition
+    FactEncounter --> FactMedication
+    FactEncounter --> FactProcedure
+    FactEncounter --> FactObservation
+    FactEncounter -- "EncounterKey, linked twice:<br/>index and readmission" --> FactReadmission
+    FactEncounter --> FactFacilityDaily
+
+    %% invisible edges keep the code dimensions below the facts; the visible arrows point up into the fact
+    FactCondition ~~~ DimDiagnosis
+    FactMedication ~~~ DimMedication
+    FactProcedure ~~~ DimProcedure
+    FactFacilityDaily ~~~ NoteRoles
+    DimDiagnosis --> FactCondition
+    DimMedication --> FactMedication
+    DimProcedure --> FactProcedure
+
+    NoteRoles ~~~ LF
+    NoteRoles ~~~ LD
+    NoteRoles ~~~ LS
+    NoteRoles ~~~ LA
+
+    classDef fact fill:#dbeafe,stroke:#1d4ed8,color:#111827
+    classDef dim fill:#f3f4f6,stroke:#6b7280,color:#111827
+    classDef scd2 fill:#f3f4f6,stroke:#1d4ed8,stroke-width:2px,color:#111827
+    classDef note fill:transparent,stroke:transparent,color:#374151
+    class FactEncounter,FactCondition,FactMedication,FactProcedure,FactObservation,FactReadmission,FactFacilityDaily,LF fact
+    class DimDate,DimDiagnosis,DimMedication,DimProcedure,LD dim
+    class DimPatient,DimFacility,DimProvider,DimPayer,LS scd2
+    class NoteEnc,NoteRoles,LA note
+
+    style DIMS fill:#f8fafc,stroke:#cbd5e1,color:#64748b
+    style FACTS fill:#f8fafc,stroke:#cbd5e1,color:#64748b
+    style CODES fill:#f8fafc,stroke:#cbd5e1,color:#64748b
+    style LEGEND fill:transparent,stroke:transparent
