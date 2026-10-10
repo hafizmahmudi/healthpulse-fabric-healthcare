@@ -21,7 +21,7 @@ Most portfolio projects stop at a dashboard. HealthPulse is built the way a prod
 ## Architecture
 
 <p align="center">
-  <img src="architecture/system-architecture.mmd" alt="HealthPulse system architecture: sources, ingestion, lakehouses, warehouses, consumption" width="100%" />
+  <img src="architecture/svg" alt="HealthPulse system architecture: sources, ingestion, lakehouses, warehouses, consumption" width="100%" />
 </p>
 
 Sources land in Bronze through one metadata-driven loader, are cleaned and validated into Silver by PySpark with quarantine for rejected rows, and are shaped into a star schema in the Gold warehouse with T-SQL. A Direct Lake semantic model serves the report and the Fabric App. Five more diagrams (medallion layers, star schema, pipeline orchestration, data quality flow, environments) and their editable sources are in [architecture/](architecture/).
