@@ -1,0 +1,305 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "HP_06_NB_IngestionUtilities",
+        "type": "TridentNotebook",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "d07b5ea2-b19b-45c0-8e21-ae97c45faf2f",
+          "workspaceId": "e8daa76e-5e3f-4dd0-8444-5f84dfbabc14"
+        }
+      },
+      {
+        "name": "Lookup_MetaData",
+        "type": "Lookup",
+        "dependsOn": [
+          {
+            "activity": "HP_06_NB_IngestionUtilities",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "source": {
+            "type": "DataWarehouseSource",
+            "sqlReaderQuery": "SELECT\n    SourceId,\n    SourceName,\n    SourceEntity,\n    SourcePath,\n    SourceFormat,\n    TargetTable,\n    LoadType,\n    WatermarkColumn,\n    LastWatermark\nFROM metadata.SourceConfig\nWHERE IsActive = 1\nORDER BY SourceId;",
+            "queryTimeout": "02:00:00",
+            "partitionOption": "None"
+          },
+          "firstRowOnly": false,
+          "datasetSettings": {
+            "annotations": [],
+            "connectionSettings": {
+              "name": "HP_03_WH_HealthAnalytics",
+              "properties": {
+                "annotations": [],
+                "type": "DataWarehouse",
+                "typeProperties": {
+                  "endpoint": "gkq3eeoge3duff5r5zhwuvtd5m-n2t5v2b7l3ie3bcel6cn7ov4cq.datawarehouse.fabric.microsoft.com",
+                  "artifactId": "8ff88eb6-51af-435c-8ff4-fb205d50ca34",
+                  "workspaceId": "e8daa76e-5e3f-4dd0-8444-5f84dfbabc14"
+                },
+                "externalReferences": {
+                  "connection": "27814464-fcff-47dc-970b-5c994443c6ef"
+                }
+              }
+            },
+            "type": "DataWarehouseTable",
+            "schema": [],
+            "typeProperties": {}
+          }
+        }
+      },
+      {
+        "name": "ForEach_Source",
+        "type": "ForEach",
+        "dependsOn": [
+          {
+            "activity": "Lookup_MetaData",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "typeProperties": {
+          "items": {
+            "value": "@activity('Lookup_MetaData').output.value",
+            "type": "Expression"
+          },
+          "isSequential": true,
+          "activities": [
+            {
+              "name": "Notebook_MetadataIngestion",
+              "type": "TridentNotebook",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "typeProperties": {
+                "notebookId": "49020cc5-8cfd-44fe-9c00-9c2ba8980a32",
+                "workspaceId": "e8daa76e-5e3f-4dd0-8444-5f84dfbabc14",
+                "parameters": {
+                  "SourceId": {
+                    "value": {
+                      "value": "@item().SourceId",
+                      "type": "Expression"
+                    },
+                    "type": "int"
+                  },
+                  "SourceName": {
+                    "value": {
+                      "value": "@item().SourceName",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "SourceEntity": {
+                    "value": {
+                      "value": "@item().SourceEntity",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "SourcePath": {
+                    "value": {
+                      "value": "@item().SourcePath",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "SourceFormat": {
+                    "value": {
+                      "value": "@item().SourceFormat",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "TargetTable": {
+                    "value": {
+                      "value": "@item().TargetTable",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "LoadType": {
+                    "value": {
+                      "value": "@item().LoadType",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "WatermarkColumn": {
+                    "value": {
+                      "value": "@item().WatermarkColumn",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "LastWatermark": {
+                    "value": {
+                      "value": "@item().LastWatermark",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "PipelineRunId": {
+                    "value": {
+                      "value": "@pipeline().RunId",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            {
+              "name": "Log_PipelineRun",
+              "type": "Script",
+              "dependsOn": [
+                {
+                  "activity": "Notebook_MetadataIngestion",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "connectionSettings": {
+                "name": "HP_03_WH_HealthAnalytics",
+                "properties": {
+                  "annotations": [],
+                  "type": "DataWarehouse",
+                  "typeProperties": {
+                    "endpoint": "gkq3eeoge3duff5r5zhwuvtd5m-n2t5v2b7l3ie3bcel6cn7ov4cq.datawarehouse.fabric.microsoft.com",
+                    "artifactId": "8ff88eb6-51af-435c-8ff4-fb205d50ca34",
+                    "workspaceId": "e8daa76e-5e3f-4dd0-8444-5f84dfbabc14"
+                  },
+                  "externalReferences": {
+                    "connection": "27814464-fcff-47dc-970b-5c994443c6ef"
+                  }
+                }
+              },
+              "typeProperties": {
+                "scripts": [
+                  {
+                    "type": "Query",
+                    "text": {
+                      "value": "INSERT INTO etl.PipelineRun\n(\n    RunID,\n    PipelineName,\n    EntityName,\n    StartTime,\n    EndTime,\n    Status,\n    RowsRead,\n    RowsWritten,\n    RowsRejected,\n    DurationSeconds,\n    ErrorMessage,\n    BatchID\n)\nVALUES\n(\n    '@{pipeline().RunId}',\n    'HP_05_PL_Health_Master',\n    '@{item().SourceEntity}',\n    '@{pipeline().TriggerTime}',\n    '@{utcNow()}',\n    'SUCCESS',\n\n    @{coalesce(\n        json(\n            coalesce(\n                activity('Notebook_MetadataIngestion').output.result.exitValue,\n                '{\"RowsRead\":0,\"RowsWritten\":0,\"RowsRejected\":0}'\n            )\n        ).RowsRead,\n        0\n    )},\n\n    @{coalesce(\n        json(\n            coalesce(\n                activity('Notebook_MetadataIngestion').output.result.exitValue,\n                '{\"RowsRead\":0,\"RowsWritten\":0,\"RowsRejected\":0}'\n            )\n        ).RowsWritten,\n        0\n    )},\n\n    @{coalesce(\n        json(\n            coalesce(\n                activity('Notebook_MetadataIngestion').output.result.exitValue,\n                '{\"RowsRead\":0,\"RowsWritten\":0,\"RowsRejected\":0}'\n            )\n        ).RowsRejected,\n        0\n    )},\n\n    DATEDIFF(\n        SECOND,\n        '@{pipeline().TriggerTime}',\n        '@{utcNow()}'\n    ),\n\n    NULL,\n\n    '@{pipeline().RunId}'\n);",
+                      "type": "Expression"
+                    }
+                  }
+                ],
+                "scriptBlockExecutionTimeout": "02:00:00"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Optimization",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "PL_SilverToGold",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "3d13a54b-b4c0-47ee-be22-e3a3239a2fc0",
+          "workspaceId": "e8daa76e-5e3f-4dd0-8444-5f84dfbabc14"
+        }
+      },
+      {
+        "name": "PL_BronzeToSilver",
+        "type": "InvokePipeline",
+        "state": "Inactive",
+        "onInactiveMarkAs": "Succeeded",
+        "dependsOn": [
+          {
+            "activity": "ForEach_Source",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "waitOnCompletion": true,
+          "operationType": "InvokeFabricPipeline",
+          "pipelineId": "47d6b969-3f51-4116-98bb-86f886fe64ea",
+          "workspaceId": "e8daa76e-5e3f-4dd0-8444-5f84dfbabc14",
+          "parameters": {}
+        }
+      },
+      {
+        "name": "PL_SilverToGold",
+        "type": "InvokePipeline",
+        "state": "Inactive",
+        "onInactiveMarkAs": "Succeeded",
+        "dependsOn": [
+          {
+            "activity": "PL_BronzeToSilver",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "waitOnCompletion": true,
+          "operationType": "InvokeFabricPipeline",
+          "pipelineId": "4ed6096d-5e3b-44de-9a61-a6e381ecc98c",
+          "workspaceId": "e8daa76e-5e3f-4dd0-8444-5f84dfbabc14",
+          "parameters": {}
+        }
+      }
+    ]
+  }
+}

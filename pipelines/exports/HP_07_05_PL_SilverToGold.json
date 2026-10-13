@@ -1,0 +1,91 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "HP_07_01_NB_SilverToGold_Structure",
+        "type": "TridentNotebook",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "0c542e99-c807-4300-8843-479d415ae7bf",
+          "workspaceId": "e8daa76e-5e3f-4dd0-8444-5f84dfbabc14"
+        }
+      },
+      {
+        "name": "HP_07_02_NB_SilverToGold_Load_Dim",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "HP_07_01_NB_SilverToGold_Structure",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "d9bb735a-5b45-4a4f-9fe4-3d40ca2f4750",
+          "workspaceId": "e8daa76e-5e3f-4dd0-8444-5f84dfbabc14"
+        }
+      },
+      {
+        "name": "HP_07_03_NB_SilverToGold_Load_Fact",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "HP_07_02_NB_SilverToGold_Load_Dim",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "b14ce3a9-2764-42dc-82aa-58805f65f63b",
+          "workspaceId": "e8daa76e-5e3f-4dd0-8444-5f84dfbabc14"
+        }
+      },
+      {
+        "name": "HP_07_04_NB_SilverToGold_DQ",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "HP_07_03_NB_SilverToGold_Load_Fact",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "bcd38b20-bfc5-4e00-96be-04df73216d40",
+          "workspaceId": "e8daa76e-5e3f-4dd0-8444-5f84dfbabc14"
+        }
+      }
+    ]
+  }
+}

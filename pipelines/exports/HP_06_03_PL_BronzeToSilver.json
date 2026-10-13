@@ -1,0 +1,168 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "BronzeToSilverLookup",
+        "type": "Lookup",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "source": {
+            "type": "DataWarehouseSource",
+            "sqlReaderQuery": "SELECT\n    SourceId,\n    SourceName,\n    SourceEntity,\n    SourcePath,\n    SourceFormat,\n    TargetTable,\n    LoadType,\n    WatermarkColumn,\n    LastWatermark\nFROM metadata.SourceConfig\nWHERE IsActive = 1\nORDER BY SourceId;",
+            "queryTimeout": "02:00:00",
+            "partitionOption": "None"
+          },
+          "firstRowOnly": false,
+          "datasetSettings": {
+            "annotations": [],
+            "connectionSettings": {
+              "name": "HP_03_WH_HealthAnalytics",
+              "properties": {
+                "annotations": [],
+                "type": "DataWarehouse",
+                "typeProperties": {
+                  "endpoint": "gkq3eeoge3duff5r5zhwuvtd5m-n2t5v2b7l3ie3bcel6cn7ov4cq.datawarehouse.fabric.microsoft.com",
+                  "artifactId": "8ff88eb6-51af-435c-8ff4-fb205d50ca34",
+                  "workspaceId": "e8daa76e-5e3f-4dd0-8444-5f84dfbabc14"
+                },
+                "externalReferences": {
+                  "connection": "27814464-fcff-47dc-970b-5c994443c6ef"
+                }
+              }
+            },
+            "type": "DataWarehouseTable",
+            "schema": [],
+            "typeProperties": {}
+          }
+        }
+      },
+      {
+        "name": "ForEach_BronzeToSliver_Load",
+        "type": "ForEach",
+        "dependsOn": [
+          {
+            "activity": "BronzeToSilverLookup",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "typeProperties": {
+          "items": {
+            "value": "@activity('BronzeToSilverLookup').output.value",
+            "type": "Expression"
+          },
+          "isSequential": true,
+          "activities": [
+            {
+              "name": "Bronze_To_Silver_Notebook",
+              "type": "TridentNotebook",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "typeProperties": {
+                "notebookId": "8dcd69e7-176d-41e4-abb5-bb082d59383d",
+                "workspaceId": "e8daa76e-5e3f-4dd0-8444-5f84dfbabc14",
+                "parameters": {
+                  "PipelineRunId": {
+                    "value": {
+                      "value": "@pipeline().RunId",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "EntityName": {
+                    "value": {
+                      "value": "@item().TargetTable",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "SourceName": {
+                    "value": {
+                      "value": "@item().SourceName",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "ForEach_BronzeToSliver_DQ",
+        "type": "ForEach",
+        "dependsOn": [
+          {
+            "activity": "ForEach_BronzeToSliver_Load",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "typeProperties": {
+          "items": {
+            "value": "@activity('BronzeToSilverLookup').output.value",
+            "type": "Expression"
+          },
+          "isSequential": true,
+          "activities": [
+            {
+              "name": "Bronze_To_Silver_DQ_Notebook",
+              "type": "TridentNotebook",
+              "dependsOn": [],
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureOutput": false,
+                "secureInput": false
+              },
+              "typeProperties": {
+                "notebookId": "36eafe4b-b317-401a-87dd-7e00b2b40d4a",
+                "workspaceId": "e8daa76e-5e3f-4dd0-8444-5f84dfbabc14",
+                "parameters": {
+                  "PipelineRunId": {
+                    "value": {
+                      "value": "@pipeline().RunId",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "EntityName": {
+                    "value": {
+                      "value": "@item().TargetTable",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  },
+                  "SourceName": {
+                    "value": {
+                      "value": "@item().SourceName",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
