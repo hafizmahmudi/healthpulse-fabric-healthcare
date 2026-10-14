@@ -1,0 +1,39 @@
+table DimDiagnosis
+	lineageTag: 31ec6ca7-8d32-477c-8bb8-1acca18939ce
+	sourceLineageTag: [dim].[DimDiagnosis]
+
+	column DiagnosisKey
+		dataType: int64
+		formatString: 0
+		lineageTag: b3f9144a-89ad-45fa-9143-4dd1e44f9f2e
+		sourceLineageTag: DiagnosisKey
+		summarizeBy: none
+		sourceColumn: DiagnosisKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiagnosisCode
+		dataType: string
+		lineageTag: ed71986f-6f70-41e7-85b5-f36ebfef74a2
+		sourceLineageTag: DiagnosisCode
+		summarizeBy: none
+		sourceColumn: DiagnosisCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiagnosisDescription
+		dataType: string
+		lineageTag: fea8f408-a89f-434a-b011-ed59f6452566
+		sourceLineageTag: DiagnosisDescription
+		summarizeBy: none
+		sourceColumn: DiagnosisDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimDiagnosis = entity
+		mode: directLake
+		source
+			entityName: DimDiagnosis
+			schemaName: dim
+			expressionSource: 'DirectLake - HP_03_WH_HealthAnalytics'
+

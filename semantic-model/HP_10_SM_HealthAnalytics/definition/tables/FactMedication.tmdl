@@ -1,0 +1,80 @@
+table FactMedication
+	lineageTag: 0d69bdec-9980-4a3a-9be2-7e0a0700f5f2
+	sourceLineageTag: [fact].[FactMedication]
+
+	column MedicationFactKey
+		dataType: int64
+		formatString: 0
+		lineageTag: f5943745-95c5-479a-8537-22e7be844fa5
+		sourceLineageTag: MedicationFactKey
+		summarizeBy: count
+		sourceColumn: MedicationFactKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column MedicationID
+		dataType: string
+		lineageTag: 30e94bae-06ac-456c-b73e-b7854a927052
+		sourceLineageTag: MedicationID
+		summarizeBy: none
+		sourceColumn: MedicationID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PatientKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 37911fec-c11b-4cdb-895b-8ce7280245bf
+		sourceLineageTag: PatientKey
+		summarizeBy: none
+		sourceColumn: PatientKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column MedicationKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 1ef6aefa-69d8-418e-9955-1f2c5fdc6669
+		sourceLineageTag: MedicationKey
+		summarizeBy: none
+		sourceColumn: MedicationKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StartDateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: ac996a4c-784b-4a34-a84b-60162493a576
+		sourceLineageTag: StartDateKey
+		summarizeBy: none
+		sourceColumn: StartDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StopDateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 3d5c3bce-d843-48b8-abec-6efcec47c176
+		sourceLineageTag: StopDateKey
+		summarizeBy: count
+		sourceColumn: StopDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column MedicationCount
+		dataType: int64
+		formatString: 0
+		lineageTag: b03ff997-52e4-42c0-919f-13dad66de044
+		sourceLineageTag: MedicationCount
+		summarizeBy: sum
+		sourceColumn: MedicationCount
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactMedication = entity
+		mode: directLake
+		source
+			entityName: FactMedication
+			schemaName: fact
+			expressionSource: 'DirectLake - HP_03_WH_HealthAnalytics'
+

@@ -1,0 +1,154 @@
+table DimProvider
+	lineageTag: 83313b76-4537-45a3-bee4-dbce3ae5ff34
+	sourceLineageTag: [dim].[DimProvider]
+
+	column ProviderKey
+		dataType: int64
+		formatString: 0
+		lineageTag: dab3fdcf-3e9f-40e8-938f-d2606342f83c
+		sourceLineageTag: ProviderKey
+		summarizeBy: none
+		sourceColumn: ProviderKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProviderID
+		dataType: string
+		lineageTag: 231fed3c-7a6a-4e36-88d5-3928422b0f8a
+		sourceLineageTag: ProviderID
+		summarizeBy: none
+		sourceColumn: ProviderID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProviderName
+		dataType: string
+		lineageTag: ca0c08e2-233a-4824-9a08-787d0398cc95
+		sourceLineageTag: ProviderName
+		summarizeBy: none
+		sourceColumn: ProviderName
+
+		annotation SummarizationSetBy = Automatic
+
+	column FacilityID
+		dataType: string
+		lineageTag: 1c3d82aa-5f99-4a14-86fc-37c729aec1a9
+		sourceLineageTag: FacilityID
+		summarizeBy: none
+		sourceColumn: FacilityID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: 54feb19b-c26e-4398-ac30-fd5cfe0da292
+		sourceLineageTag: Gender
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column Specialty
+		dataType: string
+		lineageTag: eb7b28fa-c3e4-405c-b8c5-0787076533e4
+		sourceLineageTag: Specialty
+		summarizeBy: none
+		sourceColumn: Specialty
+
+		annotation SummarizationSetBy = Automatic
+
+	column Address
+		dataType: string
+		lineageTag: b44ebe64-84ef-4f88-b3f4-5656fbdc9502
+		sourceLineageTag: Address
+		summarizeBy: none
+		sourceColumn: Address
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: d6838bbf-7550-4ca2-9ccb-5d3267170bf6
+		sourceLineageTag: City
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: 826fad30-1acf-40ad-95fa-f41c622478b9
+		sourceLineageTag: State
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column ZipCode
+		dataType: string
+		lineageTag: f08ea385-f962-477a-abbb-22222d7d1dd4
+		sourceLineageTag: ZipCode
+		summarizeBy: none
+		sourceColumn: ZipCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column Latitude
+		dataType: double
+		lineageTag: 69cb99f3-8669-4b73-8848-b370926904f8
+		sourceLineageTag: Latitude
+		summarizeBy: none
+		sourceColumn: Latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Longitude
+		dataType: double
+		lineageTag: b438820d-94e3-4cad-9e9f-72b506814c07
+		sourceLineageTag: Longitude
+		summarizeBy: none
+		sourceColumn: Longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ValidFrom
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 25f64504-d640-46d5-8b2f-bcfc8d3a5ed7
+		sourceLineageTag: ValidFrom
+		summarizeBy: none
+		sourceColumn: ValidFrom
+
+		annotation SummarizationSetBy = Automatic
+
+	column ValidTo
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 39ef8cb6-5734-491e-a2ef-52c7e2962684
+		sourceLineageTag: ValidTo
+		summarizeBy: none
+		sourceColumn: ValidTo
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCurrent
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 51be2d4c-7958-4f14-b401-1b3578503451
+		sourceLineageTag: IsCurrent
+		summarizeBy: none
+		sourceColumn: IsCurrent
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimProvider = entity
+		mode: directLake
+		source
+			entityName: DimProvider
+			schemaName: dim
+			expressionSource: 'DirectLake - HP_03_WH_HealthAnalytics'
+

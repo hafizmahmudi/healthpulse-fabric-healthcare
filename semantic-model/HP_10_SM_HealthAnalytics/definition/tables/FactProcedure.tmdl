@@ -1,0 +1,70 @@
+table FactProcedure
+	lineageTag: 04c8eae1-6907-4677-9b59-954cc13b7c2b
+	sourceLineageTag: [fact].[FactProcedure]
+
+	column ProcedureFactKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 81205531-deb8-4083-ac60-32b48d0a6e27
+		sourceLineageTag: ProcedureFactKey
+		summarizeBy: count
+		sourceColumn: ProcedureFactKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProcedureID
+		dataType: string
+		lineageTag: c526c258-4e4f-4f90-b517-439dd2e756d8
+		sourceLineageTag: ProcedureID
+		summarizeBy: none
+		sourceColumn: ProcedureID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PatientKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 3346fcd3-5d64-4725-bf0f-3e4d413ec351
+		sourceLineageTag: PatientKey
+		summarizeBy: none
+		sourceColumn: PatientKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProcedureKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 7958cc88-6776-475c-93e1-61b184fde407
+		sourceLineageTag: ProcedureKey
+		summarizeBy: none
+		sourceColumn: ProcedureKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProcedureDateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 8aab22a3-0fed-4d1e-9393-56d1d06e1570
+		sourceLineageTag: ProcedureDateKey
+		summarizeBy: none
+		sourceColumn: ProcedureDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProcedureCount
+		dataType: int64
+		formatString: 0
+		lineageTag: c15a2264-80c0-41e0-a5d0-9cb8720ab36f
+		sourceLineageTag: ProcedureCount
+		summarizeBy: sum
+		sourceColumn: ProcedureCount
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactProcedure = entity
+		mode: directLake
+		source
+			entityName: FactProcedure
+			schemaName: fact
+			expressionSource: 'DirectLake - HP_03_WH_HealthAnalytics'
+

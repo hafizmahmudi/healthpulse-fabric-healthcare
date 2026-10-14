@@ -1,0 +1,123 @@
+table DimPayer
+	lineageTag: ca6852c0-dbac-423d-9f03-a8851363b94e
+	sourceLineageTag: [dim].[DimPayer]
+
+	column PayerKey
+		dataType: int64
+		formatString: 0
+		lineageTag: eada5c42-ad65-4aff-a336-2663af47e680
+		sourceLineageTag: PayerKey
+		summarizeBy: none
+		sourceColumn: PayerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PayerID
+		dataType: string
+		lineageTag: 077d0009-0496-49fd-8bfb-b544de9b3fd9
+		sourceLineageTag: PayerID
+		summarizeBy: none
+		sourceColumn: PayerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PayerName
+		dataType: string
+		lineageTag: 244aca46-a374-4302-9ba3-4b36836287d3
+		sourceLineageTag: PayerName
+		summarizeBy: none
+		sourceColumn: PayerName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ownership
+		dataType: string
+		lineageTag: f2fe3164-9c79-46fe-b011-bdd808ba0257
+		sourceLineageTag: Ownership
+		summarizeBy: none
+		sourceColumn: Ownership
+
+		annotation SummarizationSetBy = Automatic
+
+	column Address
+		dataType: string
+		lineageTag: 6ae9257b-db7e-4949-a8a2-c0063575b857
+		sourceLineageTag: Address
+		summarizeBy: none
+		sourceColumn: Address
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: 48aeaf4c-2099-4f18-962a-e5125efb8d25
+		sourceLineageTag: City
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: f2e235e0-2e52-40cb-849c-8c987ca0721c
+		sourceLineageTag: State
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column ZipCode
+		dataType: string
+		lineageTag: 7b27c96b-781b-46b1-a360-d1682e0c41d0
+		sourceLineageTag: ZipCode
+		summarizeBy: none
+		sourceColumn: ZipCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column Phone
+		dataType: string
+		lineageTag: ecf9c218-a013-4f2e-aebb-a3789f1b1650
+		sourceLineageTag: Phone
+		summarizeBy: none
+		sourceColumn: Phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column ValidFrom
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 044e5cc3-bf02-4f6d-b098-cbf1e4b443dd
+		sourceLineageTag: ValidFrom
+		summarizeBy: none
+		sourceColumn: ValidFrom
+
+		annotation SummarizationSetBy = Automatic
+
+	column ValidTo
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 8913ca67-d80e-46bc-861a-6d9991b77e45
+		sourceLineageTag: ValidTo
+		summarizeBy: none
+		sourceColumn: ValidTo
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCurrent
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: f6279382-99b5-4461-94a6-7ad0a07eb6da
+		sourceLineageTag: IsCurrent
+		summarizeBy: none
+		sourceColumn: IsCurrent
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimPayer = entity
+		mode: directLake
+		source
+			entityName: DimPayer
+			schemaName: dim
+			expressionSource: 'DirectLake - HP_03_WH_HealthAnalytics'
+

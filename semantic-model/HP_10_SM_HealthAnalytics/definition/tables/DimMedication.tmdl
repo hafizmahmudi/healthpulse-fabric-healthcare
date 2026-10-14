@@ -1,0 +1,39 @@
+table DimMedication
+	lineageTag: 849602ae-7b4c-4d62-9920-567ae53c24ff
+	sourceLineageTag: [dim].[DimMedication]
+
+	column MedicationKey
+		dataType: int64
+		formatString: 0
+		lineageTag: a6002de3-ee7e-487c-88fe-ccad01d3310d
+		sourceLineageTag: MedicationKey
+		summarizeBy: none
+		sourceColumn: MedicationKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column MedicationCode
+		dataType: string
+		lineageTag: 4a857e22-1217-4e2f-8627-4163db5f0929
+		sourceLineageTag: MedicationCode
+		summarizeBy: none
+		sourceColumn: MedicationCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column MedicationDescription
+		dataType: string
+		lineageTag: da2a766d-e2d8-4f80-8edf-9eadce363476
+		sourceLineageTag: MedicationDescription
+		summarizeBy: none
+		sourceColumn: MedicationDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimMedication = entity
+		mode: directLake
+		source
+			entityName: DimMedication
+			schemaName: dim
+			expressionSource: 'DirectLake - HP_03_WH_HealthAnalytics'
+

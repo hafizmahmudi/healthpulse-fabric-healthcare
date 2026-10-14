@@ -1,0 +1,153 @@
+table DimPatient
+	lineageTag: b3a3228a-06f8-43d8-8242-e480d781e5a6
+	sourceLineageTag: [dim].[DimPatient]
+
+	column PatientKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 833c33db-e48a-4f10-9f53-95cf44b2baa1
+		sourceLineageTag: PatientKey
+		summarizeBy: none
+		sourceColumn: PatientKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PatientID
+		dataType: string
+		lineageTag: 77b3db9b-c00b-4d6a-b0f6-516caf551026
+		sourceLineageTag: PatientID
+		summarizeBy: none
+		sourceColumn: PatientID
+
+		annotation SummarizationSetBy = Automatic
+
+	column FirstName
+		dataType: string
+		lineageTag: 7670ace1-8c92-4407-851e-6b29bd689067
+		sourceLineageTag: FirstName
+		summarizeBy: none
+		sourceColumn: FirstName
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastName
+		dataType: string
+		lineageTag: adafd759-b8ca-4bc6-9748-a340a3ce98ee
+		sourceLineageTag: LastName
+		summarizeBy: none
+		sourceColumn: LastName
+
+		annotation SummarizationSetBy = Automatic
+
+	column MaritalStatus
+		dataType: string
+		lineageTag: d90c1854-c8d9-4294-ad47-36f353f01819
+		sourceLineageTag: MaritalStatus
+		summarizeBy: none
+		sourceColumn: MaritalStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column BirthDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 9186c65e-08cf-4015-8f5a-6be79e61e1c9
+		sourceLineageTag: BirthDate
+		summarizeBy: none
+		sourceColumn: BirthDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeathDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: fcd1e57c-bddf-4489-9a58-024453ca01d0
+		sourceLineageTag: DeathDate
+		summarizeBy: none
+		sourceColumn: DeathDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: 7e158930-3f01-4bef-a852-5c329f3c4a45
+		sourceLineageTag: Gender
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column Race
+		dataType: string
+		lineageTag: 2638ffc1-1e80-4f50-bc06-0c067fdce084
+		sourceLineageTag: Race
+		summarizeBy: none
+		sourceColumn: Race
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ethnicity
+		dataType: string
+		lineageTag: 86f3d722-9d8c-43e9-9111-0b058c3d0b3e
+		sourceLineageTag: Ethnicity
+		summarizeBy: none
+		sourceColumn: Ethnicity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age
+		dataType: int64
+		formatString: 0
+		lineageTag: 8699cb59-972c-4ca4-b726-30ee892c98ce
+		sourceLineageTag: Age
+		summarizeBy: sum
+		sourceColumn: Age
+
+		annotation SummarizationSetBy = Automatic
+
+	column AgeGroup
+		dataType: string
+		lineageTag: 3c040350-0ad1-4e36-aa8a-74e03531f5c1
+		sourceLineageTag: AgeGroup
+		summarizeBy: none
+		sourceColumn: AgeGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	column ValidFrom
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: cd593355-c5c9-4792-b353-defab4cbeb8c
+		sourceLineageTag: ValidFrom
+		summarizeBy: none
+		sourceColumn: ValidFrom
+
+		annotation SummarizationSetBy = Automatic
+
+	column ValidTo
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2068138a-cc9b-4d05-b96b-ecb0dc0fd2b4
+		sourceLineageTag: ValidTo
+		summarizeBy: none
+		sourceColumn: ValidTo
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCurrent
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 930eef98-3c57-41f4-aa7c-7c13e745543e
+		sourceLineageTag: IsCurrent
+		summarizeBy: none
+		sourceColumn: IsCurrent
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimPatient = entity
+		mode: directLake
+		source
+			entityName: DimPatient
+			schemaName: dim
+			expressionSource: 'DirectLake - HP_03_WH_HealthAnalytics'
+

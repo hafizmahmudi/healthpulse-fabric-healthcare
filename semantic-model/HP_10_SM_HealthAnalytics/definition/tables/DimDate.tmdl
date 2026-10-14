@@ -1,0 +1,152 @@
+table DimDate
+	lineageTag: a8b10a5d-482b-449a-b712-31da80f6d53b
+	sourceLineageTag: [dim].[DimDate]
+	dataCategory: Time
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: bcf36e85-2d8f-4a87-ac8d-fbe147068ba3
+		sourceLineageTag: DateKey
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column FullDate
+		dataType: dateTime
+		isKey
+		formatString: Short Date
+		lineageTag: a4d1ea02-6197-47e2-baa1-ab058078810f
+		sourceLineageTag: FullDate
+		summarizeBy: none
+		sourceColumn: FullDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: 16b9cc8a-66bb-4c71-a42c-b039a4ea1a59
+		sourceLineageTag: DayNumber
+		summarizeBy: none
+		sourceColumn: DayNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayName
+		dataType: string
+		sortByColumn: DayOfWeekNumber
+		lineageTag: 1f816d39-dd7d-4081-8fbe-3d674429765c
+		sourceLineageTag: DayName
+		summarizeBy: none
+		sourceColumn: DayName
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayOfWeekNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: a6ce546f-3c5a-4703-ac07-f1f17610da36
+		sourceLineageTag: DayOfWeekNumber
+		summarizeBy: none
+		sourceColumn: DayOfWeekNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayOfYear
+		dataType: int64
+		formatString: 0
+		lineageTag: bb5c1c20-1418-4675-a728-4730f42af981
+		sourceLineageTag: DayOfYear
+		summarizeBy: none
+		sourceColumn: DayOfYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: b9689c00-8b27-4fe6-aae5-d9be6a3c8090
+		sourceLineageTag: WeekNumber
+		summarizeBy: none
+		sourceColumn: WeekNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: 38422c6d-45b6-4039-94d0-6e764e962fca
+		sourceLineageTag: MonthNumber
+		summarizeBy: none
+		sourceColumn: MonthNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthName
+		dataType: string
+		sortByColumn: MonthNumber
+		lineageTag: fb24bbdd-b278-4408-8ed2-48e3fba25186
+		sourceLineageTag: MonthName
+		summarizeBy: none
+		sourceColumn: MonthName
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuarterNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: 14f9ccaf-7f93-474d-bc26-16f851b27fba
+		sourceLineageTag: QuarterNumber
+		summarizeBy: none
+		sourceColumn: QuarterNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuarterName
+		dataType: string
+		sortByColumn: QuarterNumber
+		lineageTag: 7cc4a147-2ca5-4123-bb30-b05959c1ccf5
+		sourceLineageTag: QuarterName
+		summarizeBy: none
+		sourceColumn: QuarterName
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: 7a29a74f-aeec-49a0-a91a-5a5781966e2f
+		sourceLineageTag: YearNumber
+		summarizeBy: none
+		sourceColumn: YearNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonth
+		dataType: string
+		lineageTag: 9dfbb156-d4f1-4906-9761-d6efcede4e2f
+		sourceLineageTag: YearMonth
+		summarizeBy: none
+		sourceColumn: YearMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsWeekend
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 79ae8a6c-064e-4495-a752-fecb5452db75
+		sourceLineageTag: IsWeekend
+		summarizeBy: none
+		sourceColumn: IsWeekend
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimDate = entity
+		mode: directLake
+		source
+			entityName: DimDate
+			schemaName: dim
+			expressionSource: 'DirectLake - HP_03_WH_HealthAnalytics'
+

@@ -1,0 +1,101 @@
+table FactReadmission
+	lineageTag: a744d742-3fa3-4696-b7d0-34b18b0ff83c
+	sourceLineageTag: [fact].[FactReadmission]
+
+	column ReadmissionKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 5cc6059d-6f60-4421-ba00-d707d77422b2
+		sourceLineageTag: ReadmissionKey
+		summarizeBy: count
+		sourceColumn: ReadmissionKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PatientKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 2d47dd39-025c-41ed-887c-d60fe4e4658a
+		sourceLineageTag: PatientKey
+		summarizeBy: none
+		sourceColumn: PatientKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column IndexEncounterKey
+		dataType: int64
+		formatString: 0
+		lineageTag: e510fafb-45f0-41b4-b5fa-dbdcce0fe011
+		sourceLineageTag: IndexEncounterKey
+		summarizeBy: count
+		sourceColumn: IndexEncounterKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReadmissionEncounterKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 7219700d-5891-4061-b68b-39318a6f1cb4
+		sourceLineageTag: ReadmissionEncounterKey
+		summarizeBy: count
+		sourceColumn: ReadmissionEncounterKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DischargeDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 39ec4506-1924-464e-85e4-e198635ce464
+		sourceLineageTag: DischargeDate
+		summarizeBy: none
+		sourceColumn: DischargeDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReadmissionDate
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: fb71b6d8-366b-4948-94a1-19963d8d16df
+		sourceLineageTag: ReadmissionDate
+		summarizeBy: none
+		sourceColumn: ReadmissionDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column DaysToReadmission
+		dataType: int64
+		formatString: 0
+		lineageTag: 7aeb1935-abe0-4f65-998e-39bf1896137d
+		sourceLineageTag: DaysToReadmission
+		summarizeBy: sum
+		sourceColumn: DaysToReadmission
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsReadmission30Day
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 585c0e51-5ea6-4dc1-b55e-fd874fcca318
+		sourceLineageTag: IsReadmission30Day
+		summarizeBy: none
+		sourceColumn: IsReadmission30Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: e50c164c-e31f-490d-bc26-405fe44d200d
+		sourceLineageTag: DateKey
+		summarizeBy: count
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactReadmission = entity
+		mode: directLake
+		source
+			entityName: FactReadmission
+			schemaName: fact
+			expressionSource: 'DirectLake - HP_03_WH_HealthAnalytics'
+

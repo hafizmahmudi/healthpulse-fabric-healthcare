@@ -1,0 +1,73 @@
+/// Metadata-driven ingestion configuration. One row per source entity.
+table SourceConfig
+	sourceLineageTag: [metadata].[SourceConfig]
+
+	column SourceId
+		dataType: int64
+		formatString: 0
+		sourceLineageTag: SourceId
+		summarizeBy: none
+		sourceColumn: SourceId
+
+	column SourceName
+		dataType: string
+		sourceLineageTag: SourceName
+		summarizeBy: none
+		sourceColumn: SourceName
+
+	column SourceEntity
+		dataType: string
+		sourceLineageTag: SourceEntity
+		summarizeBy: none
+		sourceColumn: SourceEntity
+
+	column SourcePath
+		dataType: string
+		sourceLineageTag: SourcePath
+		summarizeBy: none
+		sourceColumn: SourcePath
+
+	column SourceFormat
+		dataType: string
+		sourceLineageTag: SourceFormat
+		summarizeBy: none
+		sourceColumn: SourceFormat
+
+	column TargetTable
+		dataType: string
+		sourceLineageTag: TargetTable
+		summarizeBy: none
+		sourceColumn: TargetTable
+
+	column LoadType
+		dataType: string
+		sourceLineageTag: LoadType
+		summarizeBy: none
+		sourceColumn: LoadType
+
+	column WatermarkColumn
+		dataType: string
+		sourceLineageTag: WatermarkColumn
+		summarizeBy: none
+		sourceColumn: WatermarkColumn
+
+	column LastWatermark
+		dataType: dateTime
+		formatString: General Date
+		sourceLineageTag: LastWatermark
+		summarizeBy: none
+		sourceColumn: LastWatermark
+
+	column IsActive
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceLineageTag: IsActive
+		summarizeBy: none
+		sourceColumn: IsActive
+
+	partition SourceConfig = entity
+		mode: directLake
+		source
+			entityName: SourceConfig
+			schemaName: metadata
+			expressionSource: 'DirectLake - HP_03_WH_HealthAnalytics'

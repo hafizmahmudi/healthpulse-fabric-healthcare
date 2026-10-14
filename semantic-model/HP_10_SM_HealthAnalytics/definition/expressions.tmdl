@@ -1,0 +1,18 @@
+expression 'DirectLake - HP_03_WH_HealthAnalytics' =
+		let
+		    Source = AzureStorage.DataLake("https://onelake.dfs.fabric.microsoft.com/e8daa76e-5e3f-4dd0-8444-5f84dfbabc14/8ff88eb6-51af-435c-8ff4-fb205d50ca34", [HierarchicalNavigation=true])
+		in
+		    Source
+	lineageTag: 726ea4af-c61b-4385-bcfc-70e3caf50c20
+
+	annotation PBI_IncludeFutureArtifacts = False
+
+	annotation PBI_RemovedChildren = [{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[stg].[DimPatient]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[etl].[ProcessedFile]"}},"objectType":"Table"},{"remoteItemId":{"analysisServicesObject":{"sourceName":null,"sourceLineageTag":"[fact].[FactFacilityDaily]"}},"objectType":"Table"}]
+
+expression 'DirectLake - HP_02_LH_Health_Silver' =
+		let
+		    Source = AzureStorage.DataLake("https://onelake.dfs.fabric.microsoft.com/e8daa76e-5e3f-4dd0-8444-5f84dfbabc14/7fec1aac-b5e3-496c-9efb-84d47e5e11a5", [HierarchicalNavigation=true])
+		in
+		    Source
+
+	annotation PBI_IncludeFutureArtifacts = False

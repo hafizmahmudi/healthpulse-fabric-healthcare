@@ -1,0 +1,70 @@
+/// Data quality rule result: one row per rule evaluated in a run, with records checked and failed.
+table DQResult
+	sourceLineageTag: [dq].[result]
+
+	column DQRunID
+		dataType: string
+		isHidden
+		sourceLineageTag: DQRunID
+		summarizeBy: none
+		sourceColumn: DQRunID
+
+	column PipelineRunID
+		dataType: string
+		sourceLineageTag: PipelineRunID
+		summarizeBy: none
+		sourceColumn: PipelineRunID
+
+	column EntityName
+		dataType: string
+		sourceLineageTag: EntityName
+		summarizeBy: none
+		sourceColumn: EntityName
+
+	column RuleID
+		dataType: string
+		isHidden
+		sourceLineageTag: RuleID
+		summarizeBy: none
+		sourceColumn: RuleID
+
+	column Severity
+		dataType: string
+		sourceLineageTag: Severity
+		summarizeBy: none
+		sourceColumn: Severity
+
+	column RecordsChecked
+		dataType: int64
+		formatString: 0
+		sourceLineageTag: RecordsChecked
+		summarizeBy: none
+		sourceColumn: RecordsChecked
+
+	column RecordsFailed
+		dataType: int64
+		formatString: 0
+		sourceLineageTag: RecordsFailed
+		summarizeBy: none
+		sourceColumn: RecordsFailed
+
+	column FailurePct
+		dataType: double
+		formatString: #,##0.00
+		sourceLineageTag: FailurePct
+		summarizeBy: none
+		sourceColumn: FailurePct
+
+	column ExecutionTimestamp
+		dataType: dateTime
+		formatString: General Date
+		sourceLineageTag: ExecutionTimestamp
+		summarizeBy: none
+		sourceColumn: ExecutionTimestamp
+
+	partition DQResult = entity
+		mode: directLake
+		source
+			entityName: result
+			schemaName: dq
+			expressionSource: 'DirectLake - HP_02_LH_Health_Silver'

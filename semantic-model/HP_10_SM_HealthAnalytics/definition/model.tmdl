@@ -1,0 +1,34 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["DirectLake - HP_03_WH_HealthAnalytics"]
+
+annotation PBI_ProTooling = ["RemoteModeling","DirectLakeOnOneLakeCreatedInDesktop"]
+
+ref table DimDate
+ref table DimDiagnosis
+ref table DimMedication
+ref table DimProcedure
+ref table FactEncounter
+ref table FactCondition
+ref table FactMedication
+ref table FactProcedure
+ref table DimProvider
+ref table FactObservation
+ref table FactReadmission
+ref table DimPayer
+ref table DimPatient
+ref table DimFacility
+ref table 'Health Measures'
+ref table PipelineRun
+ref table SourceConfig
+ref table DQRun
+ref table DQResult
+ref table DQRule

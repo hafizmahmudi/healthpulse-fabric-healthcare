@@ -1,0 +1,158 @@
+table DimFacility
+	lineageTag: 46ef0bbb-e961-4fc4-8bd4-e28cb3a093c6
+	sourceLineageTag: [dim].[DimFacility]
+
+	column FacilityKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 470725e4-7e9f-4860-8cf6-103ab61c5dde
+		sourceLineageTag: FacilityKey
+		summarizeBy: none
+		sourceColumn: FacilityKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column FacilityID
+		dataType: string
+		lineageTag: 81cb6612-10a1-4aff-93d3-f258213ca8ad
+		sourceLineageTag: FacilityID
+		summarizeBy: none
+		sourceColumn: FacilityID
+
+		annotation SummarizationSetBy = Automatic
+
+	column FacilityName
+		dataType: string
+		lineageTag: ca55d906-ec0f-453e-8c7e-b872b726d721
+		sourceLineageTag: FacilityName
+		summarizeBy: none
+		sourceColumn: FacilityName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Address
+		dataType: string
+		lineageTag: dcf237c7-4ba5-4083-853c-041cda39638b
+		sourceLineageTag: Address
+		summarizeBy: none
+		sourceColumn: Address
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: 8e742f79-6e86-4e33-b2d0-bfd8acbd85f4
+		sourceLineageTag: City
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: ba6579f2-1e90-4614-98a4-b5eb2ad9b859
+		sourceLineageTag: State
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = Automatic
+
+	column ZipCode
+		dataType: string
+		lineageTag: efafdba4-8f02-442d-84f4-69df045d8468
+		sourceLineageTag: ZipCode
+		summarizeBy: none
+		sourceColumn: ZipCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column Latitude
+		dataType: double
+		lineageTag: 623d049a-1de6-4b51-8968-6d1431cb0d29
+		sourceLineageTag: Latitude
+		summarizeBy: none
+		sourceColumn: Latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Longitude
+		dataType: double
+		lineageTag: 904c6108-c711-4a52-a6f5-96d75720b893
+		sourceLineageTag: Longitude
+		summarizeBy: none
+		sourceColumn: Longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Phone
+		dataType: string
+		lineageTag: 81915ddc-b772-488f-ad59-07302a7c306d
+		sourceLineageTag: Phone
+		summarizeBy: none
+		sourceColumn: Phone
+
+		annotation SummarizationSetBy = Automatic
+
+	column Revenue
+		dataType: double
+		lineageTag: 38fc38e1-c088-41b7-8222-f1685cf10848
+		sourceLineageTag: Revenue
+		summarizeBy: none
+		sourceColumn: Revenue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Utilization
+		dataType: double
+		lineageTag: 5d21b381-dc2f-4ca4-81df-cf90095a47d0
+		sourceLineageTag: Utilization
+		summarizeBy: none
+		sourceColumn: Utilization
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ValidFrom
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 589a8456-12ba-4650-a0ee-d1e6644d647f
+		sourceLineageTag: ValidFrom
+		summarizeBy: none
+		sourceColumn: ValidFrom
+
+		annotation SummarizationSetBy = Automatic
+
+	column ValidTo
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 8fc575f1-164e-4b17-b719-cb76ad21e3f4
+		sourceLineageTag: ValidTo
+		summarizeBy: none
+		sourceColumn: ValidTo
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCurrent
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 03c29cf7-af8a-4c64-9fdf-a2560214124c
+		sourceLineageTag: IsCurrent
+		summarizeBy: none
+		sourceColumn: IsCurrent
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimFacility = entity
+		mode: directLake
+		source
+			entityName: DimFacility
+			schemaName: dim
+			expressionSource: 'DirectLake - HP_03_WH_HealthAnalytics'
+

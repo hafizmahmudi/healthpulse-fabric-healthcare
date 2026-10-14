@@ -1,0 +1,199 @@
+table FactEncounter
+	lineageTag: 4e4ae49f-295f-4678-8663-14222ed9a840
+	sourceLineageTag: [fact].[FactEncounter]
+
+	column EncounterKey
+		dataType: int64
+		formatString: 0
+		lineageTag: f7873475-5bd0-459f-a5dd-e5c1d4270b0b
+		sourceLineageTag: EncounterKey
+		summarizeBy: count
+		sourceColumn: EncounterKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column EncounterID
+		dataType: string
+		lineageTag: 2761c76a-4c2b-4617-bb47-82ec6cd8bcb5
+		sourceLineageTag: EncounterID
+		summarizeBy: none
+		sourceColumn: EncounterID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PatientKey
+		dataType: int64
+		formatString: 0
+		lineageTag: c49ab481-3221-4948-9fc6-3f4279fd42af
+		sourceLineageTag: PatientKey
+		summarizeBy: none
+		sourceColumn: PatientKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: b4823b7d-259e-4615-9c59-13821ccc239c
+		sourceLineageTag: DateKey
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column FacilityKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 73eada85-1d77-4cfe-ab7c-0f70fd138ed0
+		sourceLineageTag: FacilityKey
+		summarizeBy: none
+		sourceColumn: FacilityKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProviderKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 76081e5e-d411-4c30-ae9b-b1c07bc9c112
+		sourceLineageTag: ProviderKey
+		summarizeBy: none
+		sourceColumn: ProviderKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column PayerKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 089a0258-bd01-4362-b5ea-d952387ef8e3
+		sourceLineageTag: PayerKey
+		summarizeBy: none
+		sourceColumn: PayerKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column EncounterCode
+		dataType: string
+		lineageTag: 7cd62dfc-24ef-4b95-a7c1-295abe3bd16c
+		sourceLineageTag: EncounterCode
+		summarizeBy: none
+		sourceColumn: EncounterCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column EncounterDescription
+		dataType: string
+		lineageTag: 38eacbc6-f536-4dd9-98da-b152bf4c3118
+		sourceLineageTag: EncounterDescription
+		summarizeBy: none
+		sourceColumn: EncounterDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReasonCode
+		dataType: string
+		lineageTag: b03ff436-a54b-4b29-9447-3c2ba3cb9148
+		sourceLineageTag: ReasonCode
+		summarizeBy: none
+		sourceColumn: ReasonCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReasonDescription
+		dataType: string
+		lineageTag: fb5c0c76-5386-4791-bad9-a0efeb7eb68d
+		sourceLineageTag: ReasonDescription
+		summarizeBy: none
+		sourceColumn: ReasonDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column EncounterClass
+		dataType: string
+		lineageTag: 6dd5bb31-2e24-434b-bcc5-f9568e222964
+		sourceLineageTag: EncounterClass
+		summarizeBy: none
+		sourceColumn: EncounterClass
+
+		annotation SummarizationSetBy = Automatic
+
+	column StartTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 4e16b170-8c21-4f4d-93b5-540b8d9ce72e
+		sourceLineageTag: StartTime
+		summarizeBy: none
+		sourceColumn: StartTime
+
+		annotation SummarizationSetBy = Automatic
+
+	column EndTime
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: a026009c-d645-4e6c-8614-bbaa4dcd0351
+		sourceLineageTag: EndTime
+		summarizeBy: none
+		sourceColumn: EndTime
+
+		annotation SummarizationSetBy = Automatic
+
+	column LengthOfStayDays
+		dataType: double
+		lineageTag: d255d164-af5d-4abb-8a97-990d22d27606
+		sourceLineageTag: LengthOfStayDays
+		summarizeBy: sum
+		sourceColumn: LengthOfStayDays
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column BaseEncounterCost
+		dataType: double
+		lineageTag: 98a5c40d-75b9-47eb-a937-d0d99e4c682f
+		sourceLineageTag: BaseEncounterCost
+		summarizeBy: sum
+		sourceColumn: BaseEncounterCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TotalClaimCost
+		dataType: double
+		lineageTag: 8c1a2aab-bed7-4844-b2a5-8fc0557ea87a
+		sourceLineageTag: TotalClaimCost
+		summarizeBy: sum
+		sourceColumn: TotalClaimCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PayerCoverage
+		dataType: double
+		lineageTag: 89895ef4-4ee4-4a5e-9976-5c22bc1debca
+		sourceLineageTag: PayerCoverage
+		summarizeBy: sum
+		sourceColumn: PayerCoverage
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column EncounterCount
+		dataType: int64
+		formatString: 0
+		lineageTag: f87759f2-03d6-48cf-b4ee-fab24cc1239d
+		sourceLineageTag: EncounterCount
+		summarizeBy: sum
+		sourceColumn: EncounterCount
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactEncounter = entity
+		mode: directLake
+		source
+			entityName: FactEncounter
+			schemaName: fact
+			expressionSource: 'DirectLake - HP_03_WH_HealthAnalytics'
+

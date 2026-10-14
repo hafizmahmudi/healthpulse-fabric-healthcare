@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "HP_11_RPT_HealthPulse"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "90f9fb6b-9f6f-4827-8200-1054b1a46b75"
+  }
+}

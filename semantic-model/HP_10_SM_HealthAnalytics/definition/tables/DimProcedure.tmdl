@@ -1,0 +1,39 @@
+table DimProcedure
+	lineageTag: ec7e0f3c-ad8f-46f6-9352-7ea5532cd6df
+	sourceLineageTag: [dim].[DimProcedure]
+
+	column ProcedureKey
+		dataType: int64
+		formatString: 0
+		lineageTag: bbdf4214-7d02-4e31-9cd3-6182bbc5936a
+		sourceLineageTag: ProcedureKey
+		summarizeBy: none
+		sourceColumn: ProcedureKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProcedureCode
+		dataType: string
+		lineageTag: 63864ce3-e5e8-414f-a5eb-e5ee8f9d55fc
+		sourceLineageTag: ProcedureCode
+		summarizeBy: none
+		sourceColumn: ProcedureCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProcedureDescription
+		dataType: string
+		lineageTag: 26096906-a601-4191-9ae9-13da11aae0d3
+		sourceLineageTag: ProcedureDescription
+		summarizeBy: none
+		sourceColumn: ProcedureDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimProcedure = entity
+		mode: directLake
+		source
+			entityName: DimProcedure
+			schemaName: dim
+			expressionSource: 'DirectLake - HP_03_WH_HealthAnalytics'
+

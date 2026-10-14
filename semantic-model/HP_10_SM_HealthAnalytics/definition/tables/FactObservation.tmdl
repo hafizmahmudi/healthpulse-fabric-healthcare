@@ -1,0 +1,107 @@
+table FactObservation
+	lineageTag: 282c3127-5d99-4f79-a2b5-629b6c3f705d
+	sourceLineageTag: [fact].[FactObservation]
+
+	column ObservationFactKey
+		dataType: int64
+		formatString: 0
+		lineageTag: bac06ddb-5150-43a1-b231-db1190ee8656
+		sourceLineageTag: ObservationFactKey
+		summarizeBy: count
+		sourceColumn: ObservationFactKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ObservationID
+		dataType: string
+		lineageTag: 55c1ed80-d8ac-449e-a1cf-9509051450ac
+		sourceLineageTag: ObservationID
+		summarizeBy: none
+		sourceColumn: ObservationID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PatientKey
+		dataType: int64
+		formatString: 0
+		lineageTag: bd24dc7a-ccd3-4dfa-97ff-5500ea4111ca
+		sourceLineageTag: PatientKey
+		summarizeBy: none
+		sourceColumn: PatientKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 1cd7c910-362f-44a5-aca3-22acbd43a1ed
+		sourceLineageTag: DateKey
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ObservationCode
+		dataType: string
+		lineageTag: 77e31aa5-96f3-49c5-8efa-a2e4b27b7a34
+		sourceLineageTag: ObservationCode
+		summarizeBy: none
+		sourceColumn: ObservationCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column ObservationDescription
+		dataType: string
+		lineageTag: ff011d2a-b022-4688-88bf-e7f3e0e8790e
+		sourceLineageTag: ObservationDescription
+		summarizeBy: none
+		sourceColumn: ObservationDescription
+
+		annotation SummarizationSetBy = Automatic
+
+	column ObservationValue
+		dataType: string
+		lineageTag: 7344deea-f255-4c42-ae89-3355fb177975
+		sourceLineageTag: ObservationValue
+		summarizeBy: none
+		sourceColumn: ObservationValue
+
+		annotation SummarizationSetBy = Automatic
+
+	column NumericValue
+		dataType: double
+		lineageTag: 589c4704-4325-4df6-942b-3236570f6a5f
+		sourceLineageTag: NumericValue
+		summarizeBy: sum
+		sourceColumn: NumericValue
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Units
+		dataType: string
+		lineageTag: 583984ba-50c2-411a-a6cd-bff80d3d8711
+		sourceLineageTag: Units
+		summarizeBy: none
+		sourceColumn: Units
+
+		annotation SummarizationSetBy = Automatic
+
+	column ObservationCount
+		dataType: int64
+		formatString: 0
+		lineageTag: f5d66977-c797-45e5-9755-dd16ea2af6d5
+		sourceLineageTag: ObservationCount
+		summarizeBy: sum
+		sourceColumn: ObservationCount
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactObservation = entity
+		mode: directLake
+		source
+			entityName: FactObservation
+			schemaName: fact
+			expressionSource: 'DirectLake - HP_03_WH_HealthAnalytics'
+

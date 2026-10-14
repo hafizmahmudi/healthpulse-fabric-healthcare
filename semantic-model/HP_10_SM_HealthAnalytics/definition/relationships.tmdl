@@ -1,0 +1,109 @@
+relationship 9a09868b-2cda-e623-2711-66a8dd05c430
+	relyOnReferentialIntegrity
+	fromColumn: FactEncounter.DateKey
+	toColumn: DimDate.DateKey
+
+relationship e98e5ae5-80fe-2473-c153-713cb9fffed6
+	relyOnReferentialIntegrity
+	fromColumn: FactEncounter.PayerKey
+	toColumn: DimPayer.PayerKey
+
+relationship 63cee5b6-a16e-3c43-450f-28b7078d4cd1
+	relyOnReferentialIntegrity
+	fromColumn: FactEncounter.PatientKey
+	toColumn: DimPatient.PatientKey
+
+relationship defa30ad-354f-dac4-b7a0-9b1f1996477e
+	relyOnReferentialIntegrity
+	fromColumn: FactEncounter.FacilityKey
+	toColumn: DimFacility.FacilityKey
+
+relationship 791c24be-a0de-7632-699f-8f303f9b8525
+	relyOnReferentialIntegrity
+	fromColumn: FactEncounter.ProviderKey
+	toColumn: DimProvider.ProviderKey
+
+relationship 166d9dd4-13ee-2b9f-5627-199ee0e4ff75
+	relyOnReferentialIntegrity
+	fromColumn: FactProcedure.ProcedureKey
+	toColumn: DimProcedure.ProcedureKey
+
+relationship 277c8cb2-f9c4-394d-1e82-df2e88fd295b
+	relyOnReferentialIntegrity
+	fromColumn: FactProcedure.ProcedureDateKey
+	toColumn: DimDate.DateKey
+
+relationship 2f5f38bb-f5e2-e992-c205-f9e39de2cabf
+	relyOnReferentialIntegrity
+	fromColumn: FactProcedure.PatientKey
+	toColumn: DimPatient.PatientKey
+
+relationship 2b389055-0ee1-e655-f5d1-77db8d8859cc
+	relyOnReferentialIntegrity
+	fromColumn: FactCondition.DiagnosisKey
+	toColumn: DimDiagnosis.DiagnosisKey
+
+relationship 4d7c0bd0-721d-1c58-a490-e73fb116666f
+	relyOnReferentialIntegrity
+	fromColumn: FactCondition.PatientKey
+	toColumn: DimPatient.PatientKey
+
+relationship 036bd071-f53c-8bac-33df-146774b3b610
+	relyOnReferentialIntegrity
+	fromColumn: FactCondition.StartDateKey
+	toColumn: DimDate.DateKey
+
+relationship 472b0681-85ba-3fce-7fdd-9bd04c64e841
+	relyOnReferentialIntegrity
+	fromColumn: FactMedication.StartDateKey
+	toColumn: DimDate.DateKey
+
+relationship dc9f2b86-1a6b-5d95-f085-efe416445b31
+	relyOnReferentialIntegrity
+	fromColumn: FactMedication.PatientKey
+	toColumn: DimPatient.PatientKey
+
+relationship 585c6160-dccf-5f3f-a861-945d25f99b7f
+	relyOnReferentialIntegrity
+	fromColumn: FactMedication.MedicationKey
+	toColumn: DimMedication.MedicationKey
+
+relationship 5c268b53-408d-5a59-9fb7-793ff1c62a37
+	relyOnReferentialIntegrity
+	fromColumn: FactObservation.DateKey
+	toColumn: DimDate.DateKey
+
+relationship c767669a-8f13-2b2d-0209-fa40baa25339
+	relyOnReferentialIntegrity
+	fromColumn: FactObservation.PatientKey
+	toColumn: DimPatient.PatientKey
+
+relationship 75a7d580-d584-6827-edeb-1d3d324f71eb
+	relyOnReferentialIntegrity
+	fromColumn: FactReadmission.PatientKey
+	toColumn: DimPatient.PatientKey
+
+relationship 41aef05c-6062-6a94-1d65-6d969cf18e98
+	isActive: false
+	relyOnReferentialIntegrity
+	fromColumn: FactCondition.StopDateKey
+	toColumn: DimDate.DateKey
+
+relationship 45e6c870-d447-6ba9-ad7d-24ea964d0382
+	isActive: false
+	relyOnReferentialIntegrity
+	fromColumn: FactMedication.StopDateKey
+	toColumn: DimDate.DateKey
+
+relationship 'FactReadmission to DimDate'
+	relyOnReferentialIntegrity
+	fromColumn: FactReadmission.DateKey
+	toColumn: DimDate.DateKey
+
+relationship 'DQResult to DQRun'
+	fromColumn: DQResult.DQRunID
+	toColumn: DQRun.DQRunID
+
+relationship 'DQResult to DQRule'
+	fromColumn: DQResult.RuleID
+	toColumn: DQRule.RuleID

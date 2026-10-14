@@ -1,0 +1,71 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/reportExtension/1.0.0/schema.json",
+  "name": "extension",
+  "entities": [
+    {
+      "name": "Health Measures",
+      "measures": [
+        {
+          "name": "Fmt Top Encounter Type",
+          "expression": "IF(RANKX(ALLSELECTED('FactEncounter'[EncounterDescription]), [# Encounters]) = 1, \"#1971c2\", \"#C9D1DB\")",
+          "dataType": "Text"
+        },
+        {
+          "name": "Fmt Top Diagnosis",
+          "expression": "IF(RANKX(ALLSELECTED('DimDiagnosis'[DiagnosisDescription]), [# Conditions]) = 1, \"#1971c2\", \"#C9D1DB\")",
+          "dataType": "Text"
+        },
+        {
+          "name": "Fmt Top Procedure",
+          "expression": "IF(RANKX(ALLSELECTED('DimProcedure'[ProcedureDescription]), [# Procedures]) = 1, \"#1971c2\", \"#C9D1DB\")",
+          "dataType": "Text"
+        },
+        {
+          "name": "Fmt Top Medication",
+          "expression": "IF(RANKX(ALLSELECTED('DimMedication'[MedicationDescription]), [# Medications]) = 1, \"#1971c2\", \"#C9D1DB\")",
+          "dataType": "Text"
+        },
+        {
+          "name": "Fmt Top Marital Status",
+          "expression": "IF(RANKX(ALLSELECTED('DimPatient'[MaritalStatus]), [# Patients]) = 1, \"#1971c2\", \"#C9D1DB\")",
+          "dataType": "Text"
+        },
+        {
+          "name": "Fmt Top Ethnicity",
+          "expression": "IF(RANKX(ALLSELECTED('DimPatient'[Ethnicity]), [# Patients]) = 1, \"#1971c2\", \"#C9D1DB\")",
+          "dataType": "Text"
+        },
+        {
+          "name": "Fmt Top Race",
+          "expression": "IF(RANKX(ALLSELECTED('DimPatient'[Race]), [# Patients]) = 1, \"#1971c2\", \"#C9D1DB\")",
+          "dataType": "Text"
+        },
+        {
+          "name": "Title Monthly Encounters",
+          "expression": "VAR _y = SELECTEDVALUE('DimDate'[YearNumber]) RETURN IF(ISBLANK(_y), \"Monthly encounters vs prior year\", \"Monthly encounters, \" & _y & \" vs \" & (_y - 1))",
+          "dataType": "Text"
+        },
+        {
+          "name": "Title Monthly Readmission",
+          "expression": "VAR _y = SELECTEDVALUE('DimDate'[YearNumber]) RETURN IF(ISBLANK(_y), \"Monthly 30-day readmission rate vs prior year\", \"Monthly 30-day readmission rate, \" & _y & \" vs \" & (_y - 1))",
+          "dataType": "Text"
+        },
+        {
+          "name": "Title Encounter Types",
+          "expression": "\"Encounters by type\" & IF(HASONEVALUE('DimDate'[YearNumber]), \", \" & SELECTEDVALUE('DimDate'[YearNumber]), \"\")",
+          "dataType": "Text"
+        },
+        {
+          "name": "Title DQ Failed",
+          "expression": "\"Failed checks across all runs  ·  latest run \" & FORMAT([Last DQ Run], \"yyyy-mm-dd hh:nn\")",
+          "dataType": "Text"
+        },
+        {
+          "name": "Title Pipeline",
+          "expression": "\"Pipeline activity by entity  ·  last run \" & FORMAT([Last Pipeline Run], \"yyyy-mm-dd hh:nn\")",
+          "dataType": "Text"
+        }
+      ]
+    }
+  ]
+}

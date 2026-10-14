@@ -1,0 +1,374 @@
+/// Dedicated home for the model's explicit measures. Holds no data: the single hidden Value column is a placeholder required for the table to exist.
+table 'Health Measures'
+
+	/// Number of encounters (visits). One row per EncounterID in the warehouse, so this is a true count of visits.
+	measure '# Encounters' = COUNTROWS('FactEncounter')
+		formatString: #,##0
+		displayFolder: Encounters
+
+	/// Number of distinct patients with at least one encounter in the current filter context. Use # Patients for the registered patient population.
+	measure '# Patients Seen' = DISTINCTCOUNT('FactEncounter'[PatientKey])
+		formatString: #,##0
+		displayFolder: Encounters
+
+	/// Average number of encounters per patient seen. Blank when no patients are in context.
+	measure 'Encounters per Patient' = DIVIDE([# Encounters], [# Patients Seen])
+		formatString: #,##0.00
+		displayFolder: Encounters
+
+	/// Encounters that carry a reason-for-visit code. About 28% of encounters have one; the rest are routine or wellness visits with no coded reason.
+	measure '# Encounters with Reason' = CALCULATE(COUNTROWS('FactEncounter'), NOT ISBLANK('FactEncounter'[ReasonCode]))
+		formatString: #,##0
+		displayFolder: Encounters
+
+	/// Mean length of stay in days across encounters. Returns blank until the Silver-to-Gold load populates LengthOfStayDays (currently null in the warehouse).
+	measure 'Average Length of Stay (days)' = AVERAGE('FactEncounter'[LengthOfStayDays])
+		formatString: #,##0.0
+		displayFolder: Encounters
+
+	/// Sum of total claim cost across encounters. Returns blank until the Silver-to-Gold load populates TotalClaimCost (currently null in the warehouse).
+	measure 'Total Claim Cost' = SUM('FactEncounter'[TotalClaimCost])
+		formatString: $#,##0.00
+		displayFolder: Financial
+
+	/// Sum of base encounter cost, before claims and coverage. Returns blank until the warehouse column is populated.
+	measure 'Total Base Encounter Cost' = SUM('FactEncounter'[BaseEncounterCost])
+		formatString: $#,##0.00
+		displayFolder: Financial
+
+	/// Sum of the amount covered by payers across encounters. Returns blank until the warehouse column is populated.
+	measure 'Total Payer Coverage' = SUM('FactEncounter'[PayerCoverage])
+		formatString: $#,##0.00
+		displayFolder: Financial
+
+	/// Portion of claim cost not covered by payers: Total Claim Cost minus Total Payer Coverage.
+	measure 'Patient Out of Pocket' = [Total Claim Cost] - [Total Payer Coverage]
+		formatString: $#,##0.00
+		displayFolder: Financial
+
+	/// Share of total claim cost covered by payers.
+	measure 'Payer Coverage (%)' = DIVIDE([Total Payer Coverage], [Total Claim Cost])
+		formatString: 0.00%
+		displayFolder: Financial
+
+	/// Mean total claim cost per encounter.
+	measure 'Average Claim Cost' = AVERAGE('FactEncounter'[TotalClaimCost])
+		formatString: $#,##0.00
+		displayFolder: Financial
+
+	/// Number of registered patients, counting only the current SCD2 version of each patient so historical versions are not double counted.
+	measure '# Patients' = CALCULATE(COUNTROWS('DimPatient'), 'DimPatient'[IsCurrent] = TRUE())
+		formatString: #,##0
+		displayFolder: Patients
+
+	/// Mean age in years of registered patients (current version only). Age is as of the warehouse load, not as of the encounter.
+	measure 'Average Patient Age' = CALCULATE(AVERAGE('DimPatient'[Age]), 'DimPatient'[IsCurrent] = TRUE())
+		formatString: #,##0.0
+		displayFolder: Patients
+
+	/// Number of condition (diagnosis) records. One row per ConditionID.
+	measure '# Conditions' = COUNTROWS('FactCondition')
+		formatString: #,##0
+		displayFolder: Clinical Activity
+
+	/// Condition records with no stop date, meaning the condition is ongoing.
+	measure '# Active Conditions' = CALCULATE(COUNTROWS('FactCondition'), ISBLANK('FactCondition'[StopDateKey]))
+		formatString: #,##0
+		displayFolder: Clinical Activity
+
+	/// Average number of condition records per patient who has at least one condition.
+	measure 'Conditions per Patient' = DIVIDE([# Conditions], DISTINCTCOUNT('FactCondition'[PatientKey]))
+		formatString: #,##0.00
+		displayFolder: Clinical Activity
+
+	/// Number of medication orders. One row per MedicationID.
+	measure '# Medications' = COUNTROWS('FactMedication')
+		formatString: #,##0
+		displayFolder: Clinical Activity
+
+	/// Medication orders with no stop date, meaning the medication is still active.
+	measure '# Active Medications' = CALCULATE(COUNTROWS('FactMedication'), ISBLANK('FactMedication'[StopDateKey]))
+		formatString: #,##0
+		displayFolder: Clinical Activity
+
+	/// Number of procedures performed. One row per ProcedureID.
+	measure '# Procedures' = COUNTROWS('FactProcedure')
+		formatString: #,##0
+		displayFolder: Clinical Activity
+
+	/// Number of clinical observations (vitals and lab results). One row per ObservationID.
+	measure '# Observations' = COUNTROWS('FactObservation')
+		formatString: #,##0
+		displayFolder: Clinical Activity
+
+	/// Mean numeric observation value. Only meaningful when filtered to a single observation code, since units differ between codes.
+	measure 'Average Observation Value' = AVERAGE('FactObservation'[NumericValue])
+		formatString: #,##0.00
+		displayFolder: Clinical Activity
+
+	/// Number of index encounters that were followed by a later encounter for the same patient. This is the denominator for the readmission rate.
+	/// Proxy method: the source has no admission or discharge dates, so any later encounter counts as the follow-up.
+	measure '# Index Encounters' = COUNTROWS('FactReadmission')
+		formatString: #,##0
+		displayFolder: Readmissions
+
+	/// Index encounters whose next encounter occurred within 1 to 30 days. Proxy readmission based on encounter dates, not clinical discharge.
+	measure '# 30-Day Readmissions' = CALCULATE(COUNTROWS('FactReadmission'), 'FactReadmission'[IsReadmission30Day] = TRUE())
+		formatString: #,##0
+		displayFolder: Readmissions
+
+	/// Share of index encounters followed by another encounter within 30 days.
+	measure '30-Day Readmission Rate (%)' = DIVIDE([# 30-Day Readmissions], [# Index Encounters])
+		formatString: 0.00%
+		displayFolder: Readmissions
+
+	/// Mean number of days between an index encounter and the patient's next encounter, across all index encounters.
+	measure 'Average Days to Readmission' = AVERAGE('FactReadmission'[DaysToReadmission])
+		formatString: #,##0.0
+		displayFolder: Readmissions
+
+	/// Mean days to the next encounter, restricted to encounters that qualified as 30-day readmissions.
+	measure 'Average Days to 30-Day Readmission' = CALCULATE(AVERAGE('FactReadmission'[DaysToReadmission]), 'FactReadmission'[IsReadmission30Day] = TRUE())
+		formatString: #,##0.0
+		displayFolder: Readmissions
+
+	/// Number of encounters for the same period one year earlier. Requires a date filter (year, quarter, month) in context.
+	measure '# Encounters (ly)' = CALCULATE([# Encounters], SAMEPERIODLASTYEAR('DimDate'[FullDate]))
+		formatString: #,##0
+		displayFolder: Prior Year
+
+	/// Number of distinct patients seen for the same period one year earlier. Requires a date filter (year, quarter, month) in context.
+	measure '# Patients Seen (ly)' = CALCULATE([# Patients Seen], SAMEPERIODLASTYEAR('DimDate'[FullDate]))
+		formatString: #,##0
+		displayFolder: Prior Year
+
+	/// Number of condition records for the same period one year earlier. Requires a date filter (year, quarter, month) in context.
+	measure '# Conditions (ly)' = CALCULATE([# Conditions], SAMEPERIODLASTYEAR('DimDate'[FullDate]))
+		formatString: #,##0
+		displayFolder: Prior Year
+
+	/// Number of medication orders for the same period one year earlier. Requires a date filter (year, quarter, month) in context.
+	measure '# Medications (ly)' = CALCULATE([# Medications], SAMEPERIODLASTYEAR('DimDate'[FullDate]))
+		formatString: #,##0
+		displayFolder: Prior Year
+
+	/// Number of procedures for the same period one year earlier. Requires a date filter (year, quarter, month) in context.
+	measure '# Procedures (ly)' = CALCULATE([# Procedures], SAMEPERIODLASTYEAR('DimDate'[FullDate]))
+		formatString: #,##0
+		displayFolder: Prior Year
+
+	/// Number of observations for the same period one year earlier. Requires a date filter (year, quarter, month) in context.
+	measure '# Observations (ly)' = CALCULATE([# Observations], SAMEPERIODLASTYEAR('DimDate'[FullDate]))
+		formatString: #,##0
+		displayFolder: Prior Year
+
+	/// Number of index encounters for the same period one year earlier. Requires a date filter (year, quarter, month) in context.
+	measure '# Index Encounters (ly)' = CALCULATE([# Index Encounters], SAMEPERIODLASTYEAR('DimDate'[FullDate]))
+		formatString: #,##0
+		displayFolder: Prior Year
+
+	/// Number of 30-day readmissions for the same period one year earlier. Requires a date filter (year, quarter, month) in context.
+	measure '# 30-Day Readmissions (ly)' = CALCULATE([# 30-Day Readmissions], SAMEPERIODLASTYEAR('DimDate'[FullDate]))
+		formatString: #,##0
+		displayFolder: Prior Year
+
+	/// 30-day readmission rate for the same period one year earlier. Requires a date filter (year, quarter, month) in context.
+	measure '30-Day Readmission Rate (%) (ly)' = CALCULATE([30-Day Readmission Rate (%)], SAMEPERIODLASTYEAR('DimDate'[FullDate]))
+		formatString: 0.00%
+		displayFolder: Prior Year
+
+	/// Average days to readmission for the same period one year earlier. Requires a date filter (year, quarter, month) in context.
+	measure 'Average Days to Readmission (ly)' = CALCULATE([Average Days to Readmission], SAMEPERIODLASTYEAR('DimDate'[FullDate]))
+		formatString: #,##0.0
+		displayFolder: Prior Year
+
+	/// Relative change in # Encounters against the same period one year earlier. Positive means growth.
+	measure '# Encounters vs ly (%)' = DIVIDE([# Encounters] - [# Encounters (ly)], [# Encounters (ly)])
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: Prior Year
+
+	/// Relative change in # Patients Seen against the same period one year earlier. Positive means growth.
+	measure '# Patients Seen vs ly (%)' = DIVIDE([# Patients Seen] - [# Patients Seen (ly)], [# Patients Seen (ly)])
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: Prior Year
+
+	/// Relative change in # Procedures against the same period one year earlier. Positive means growth.
+	measure '# Procedures vs ly (%)' = DIVIDE([# Procedures] - [# Procedures (ly)], [# Procedures (ly)])
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: Prior Year
+
+	/// Relative change in # Conditions against the same period one year earlier. Positive means growth.
+	measure '# Conditions vs ly (%)' = DIVIDE([# Conditions] - [# Conditions (ly)], [# Conditions (ly)])
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: Prior Year
+
+	/// Relative change in # Medications against the same period one year earlier. Positive means growth.
+	measure '# Medications vs ly (%)' = DIVIDE([# Medications] - [# Medications (ly)], [# Medications (ly)])
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: Prior Year
+
+	/// Change in the 30-day readmission rate against the same period one year earlier, in percentage points. Negative is an improvement.
+	measure '30-Day Readmission Rate vs ly (pp)' = ([30-Day Readmission Rate (%)] - [30-Day Readmission Rate (%) (ly)]) * 100
+		formatString: +0.00" pp";-0.00" pp";0.00" pp"
+		displayFolder: Prior Year
+
+	/// Encounters per patient seen for the same period one year earlier.
+	measure 'Encounters per Patient (ly)' = DIVIDE([# Encounters (ly)], [# Patients Seen (ly)])
+		formatString: #,##0.00
+		displayFolder: Prior Year
+
+	/// Distinct pipeline run identifiers logged.
+	measure '# Pipeline Runs' = DISTINCTCOUNT('PipelineRun'[RunID])
+		formatString: #,##0
+		displayFolder: Pipeline Health
+
+	/// Entity-level activities logged across pipeline runs.
+	measure '# Pipeline Activities' = COUNTROWS('PipelineRun')
+		formatString: #,##0
+		displayFolder: Pipeline Health
+
+	/// Activities whose status is not SUCCESS.
+	measure '# Pipeline Failures' = CALCULATE(COUNTROWS('PipelineRun'), 'PipelineRun'[Status] <> "SUCCESS")
+		formatString: #,##0
+		displayFolder: Pipeline Health
+
+	/// Share of logged activities that succeeded.
+	measure 'Pipeline Success Rate (%)' = DIVIDE([# Pipeline Activities] - [# Pipeline Failures], [# Pipeline Activities])
+		formatString: 0.0%
+		displayFolder: Pipeline Health
+
+	/// Rows read from source across activities in context.
+	measure 'Pipeline Rows Read' = SUM('PipelineRun'[RowsRead])
+		formatString: #,##0
+		displayFolder: Pipeline Health
+
+	/// Rows written to target across activities in context.
+	measure 'Pipeline Rows Written' = SUM('PipelineRun'[RowsWritten])
+		formatString: #,##0
+		displayFolder: Pipeline Health
+
+	/// Rows rejected across activities in context.
+	measure 'Pipeline Rows Rejected' = SUM('PipelineRun'[RowsRejected])
+		formatString: #,##0
+		displayFolder: Pipeline Health
+
+	/// Mean activity duration in seconds.
+	measure 'Average Pipeline Duration (s)' = AVERAGE('PipelineRun'[DurationSeconds])
+		formatString: #,##0
+		displayFolder: Pipeline Health
+
+	/// Start time of the most recent logged pipeline activity.
+	measure 'Last Pipeline Run' = MAX('PipelineRun'[StartTime])
+		formatString: yyyy-mm-dd hh:nn
+		displayFolder: Pipeline Health
+
+	/// Source entities defined in the ingestion configuration.
+	measure '# Configured Sources' = COUNTROWS('SourceConfig')
+		formatString: #,##0
+		displayFolder: Pipeline Health
+
+	/// Configured sources flagged active.
+	measure '# Active Sources' = CALCULATE(COUNTROWS('SourceConfig'), 'SourceConfig'[IsActive] = TRUE())
+		formatString: #,##0
+		displayFolder: Pipeline Health
+
+	/// Entity-level data quality runs logged by the Bronze-to-Silver framework.
+	measure '# DQ Runs' = COUNTROWS('DQRun')
+		formatString: #,##0
+		displayFolder: Data Quality
+
+	/// Distinct pipeline runs that produced data quality results.
+	measure '# DQ Pipeline Runs' = DISTINCTCOUNT('DQRun'[PipelineRunID])
+		formatString: #,##0
+		displayFolder: Data Quality
+
+	/// Records evaluated across runs in context.
+	measure 'DQ Records Checked' = SUM('DQRun'[TotalRecords])
+		formatString: #,##0
+		displayFolder: Data Quality
+
+	/// Records quarantined because a blocking rule failed.
+	measure 'DQ Records Rejected' = SUM('DQRun'[RejectedRecords])
+		formatString: #,##0
+		displayFolder: Data Quality
+
+	/// Share of evaluated records that were rejected.
+	measure 'DQ Rejection Rate (%)' = DIVIDE([DQ Records Rejected], [DQ Records Checked])
+		formatString: 0.00%
+		displayFolder: Data Quality
+
+	/// Mean data quality score (0 to 100) across runs in context.
+	measure 'DQ Score' = AVERAGE('DQRun'[DQScore])
+		formatString: 0.0
+		displayFolder: Data Quality
+
+	/// Start time of the most recent data quality run in context.
+	measure 'Last DQ Run' = MAX('DQRun'[StartTime])
+		formatString: yyyy-mm-dd hh:nn
+		displayFolder: Data Quality
+
+	/// Pipeline run identifier of the most recent data quality run. Used to scope visuals to the latest run.
+	measure 'Latest DQ Pipeline Run ID' = VAR _t = MAX('DQRun'[StartTime]) RETURN CALCULATE(MAX('DQRun'[PipelineRunID]), 'DQRun'[StartTime] = _t)
+		displayFolder: Data Quality
+
+	/// Mean data quality score for the most recent pipeline run only.
+	measure 'DQ Score (latest run)' = VAR _id = [Latest DQ Pipeline Run ID] RETURN CALCULATE([DQ Score], 'DQRun'[PipelineRunID] = _id)
+		formatString: 0.0
+		displayFolder: Data Quality
+
+	/// Rule evaluations logged across runs in context.
+	measure '# DQ Rule Results' = COUNTROWS('DQResult')
+		formatString: #,##0
+		displayFolder: Data Quality
+
+	/// Rule evaluations with at least one failing record.
+	measure '# DQ Rules Failed' = CALCULATE(COUNTROWS('DQResult'), 'DQResult'[RecordsFailed] > 0)
+		formatString: #,##0
+		displayFolder: Data Quality
+
+	/// Failing rule evaluations in the most recent pipeline run only.
+	measure '# DQ Rules Failed (latest run)' = VAR _id = [Latest DQ Pipeline Run ID] RETURN COALESCE(CALCULATE([# DQ Rules Failed], 'DQResult'[PipelineRunID] = _id), 0)
+		formatString: #,##0
+		displayFolder: Data Quality
+
+	/// Failing rule evaluations with CRITICAL severity. Any value above zero needs attention before Silver is trusted.
+	measure '# Critical DQ Failures' = COALESCE(CALCULATE(COUNTROWS('DQResult'), 'DQResult'[RecordsFailed] > 0, 'DQResult'[Severity] = "CRITICAL"), 0)
+		formatString: #,##0
+		displayFolder: Data Quality
+
+	/// Share of rule evaluations with no failing records.
+	measure 'DQ Rule Pass Rate (%)' = DIVIDE([# DQ Rule Results] - [# DQ Rules Failed], [# DQ Rule Results])
+		formatString: 0.0%
+		displayFolder: Data Quality
+
+	/// Records checked across rule evaluations in context.
+	measure 'Rule Records Checked' = SUM('DQResult'[RecordsChecked])
+		formatString: #,##0
+		displayFolder: Data Quality
+
+	/// Records that failed across rule evaluations in context.
+	measure 'Rule Records Failed' = SUM('DQResult'[RecordsFailed])
+		formatString: #,##0
+		displayFolder: Data Quality
+
+	/// Share of checked records that failed the rule.
+	measure 'Rule Failure Rate (%)' = DIVIDE([Rule Records Failed], [Rule Records Checked])
+		formatString: 0.00%
+		displayFolder: Data Quality
+
+	/// Rules currently active in the catalogue.
+	measure '# Active DQ Rules' = CALCULATE(COUNTROWS('DQRule'), 'DQRule'[IsActive] = TRUE())
+		formatString: #,##0
+		displayFolder: Data Quality
+
+	/// Placeholder column for the measure table. Hidden and not for use in reports.
+	column Value
+		dataType: string
+		isHidden
+		isAvailableInMdx: false
+		summarizeBy: none
+		sourceColumn: [Value]
+
+	partition 'Health Measures' = calculated
+		mode: import
+		source = ROW("Value", BLANK())

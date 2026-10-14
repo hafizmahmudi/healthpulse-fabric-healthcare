@@ -1,0 +1,88 @@
+/// Pipeline execution audit log. One row per entity processed in a run.
+table PipelineRun
+	sourceLineageTag: [etl].[PipelineRun]
+
+	column RunID
+		dataType: string
+		sourceLineageTag: RunID
+		summarizeBy: none
+		sourceColumn: RunID
+
+	column PipelineName
+		dataType: string
+		sourceLineageTag: PipelineName
+		summarizeBy: none
+		sourceColumn: PipelineName
+
+	column EntityName
+		dataType: string
+		sourceLineageTag: EntityName
+		summarizeBy: none
+		sourceColumn: EntityName
+
+	column StartTime
+		dataType: dateTime
+		formatString: General Date
+		sourceLineageTag: StartTime
+		summarizeBy: none
+		sourceColumn: StartTime
+
+	column EndTime
+		dataType: dateTime
+		formatString: General Date
+		sourceLineageTag: EndTime
+		summarizeBy: none
+		sourceColumn: EndTime
+
+	column Status
+		dataType: string
+		sourceLineageTag: Status
+		summarizeBy: none
+		sourceColumn: Status
+
+	column RowsRead
+		dataType: int64
+		formatString: 0
+		sourceLineageTag: RowsRead
+		summarizeBy: none
+		sourceColumn: RowsRead
+
+	column RowsWritten
+		dataType: int64
+		formatString: 0
+		sourceLineageTag: RowsWritten
+		summarizeBy: none
+		sourceColumn: RowsWritten
+
+	column RowsRejected
+		dataType: int64
+		formatString: 0
+		sourceLineageTag: RowsRejected
+		summarizeBy: none
+		sourceColumn: RowsRejected
+
+	column DurationSeconds
+		dataType: int64
+		formatString: 0
+		sourceLineageTag: DurationSeconds
+		summarizeBy: none
+		sourceColumn: DurationSeconds
+
+	column ErrorMessage
+		dataType: string
+		sourceLineageTag: ErrorMessage
+		summarizeBy: none
+		sourceColumn: ErrorMessage
+
+	column BatchID
+		dataType: string
+		sourceLineageTag: BatchID
+		summarizeBy: none
+		sourceColumn: BatchID
+
+	partition PipelineRun = entity
+		mode: directLake
+		source
+			entityName: PipelineRun
+			schemaName: etl
+			expressionSource: 'DirectLake - HP_03_WH_HealthAnalytics'

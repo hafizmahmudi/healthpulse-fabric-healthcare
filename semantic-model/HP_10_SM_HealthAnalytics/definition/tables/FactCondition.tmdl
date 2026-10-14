@@ -1,0 +1,80 @@
+table FactCondition
+	lineageTag: 1dd5bbdb-d0e0-4dc1-9c98-a6cdfe737d2d
+	sourceLineageTag: [fact].[FactCondition]
+
+	column ConditionFactKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 80df920a-5aad-46a7-935e-ffd6ac760b2a
+		sourceLineageTag: ConditionFactKey
+		summarizeBy: count
+		sourceColumn: ConditionFactKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConditionID
+		dataType: string
+		lineageTag: 126a07f4-8e1c-414a-9742-8e2e0b31b372
+		sourceLineageTag: ConditionID
+		summarizeBy: none
+		sourceColumn: ConditionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PatientKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 2de0de93-931a-4864-aefa-74023e477831
+		sourceLineageTag: PatientKey
+		summarizeBy: none
+		sourceColumn: PatientKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column DiagnosisKey
+		dataType: int64
+		formatString: 0
+		lineageTag: ae9ce538-e610-4bed-ae83-79954a563831
+		sourceLineageTag: DiagnosisKey
+		summarizeBy: none
+		sourceColumn: DiagnosisKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StartDateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 9d998270-cba7-44c9-8443-51fc3f9bacff
+		sourceLineageTag: StartDateKey
+		summarizeBy: none
+		sourceColumn: StartDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column StopDateKey
+		dataType: int64
+		formatString: 0
+		lineageTag: bc86f9ad-7cdb-4768-9541-e6e477be8ddf
+		sourceLineageTag: StopDateKey
+		summarizeBy: count
+		sourceColumn: StopDateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConditionCount
+		dataType: int64
+		formatString: 0
+		lineageTag: 79124c02-df8a-4b88-859d-4a42a02b0f13
+		sourceLineageTag: ConditionCount
+		summarizeBy: sum
+		sourceColumn: ConditionCount
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactCondition = entity
+		mode: directLake
+		source
+			entityName: FactCondition
+			schemaName: fact
+			expressionSource: 'DirectLake - HP_03_WH_HealthAnalytics'
+

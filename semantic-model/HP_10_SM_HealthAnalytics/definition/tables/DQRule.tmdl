@@ -1,0 +1,73 @@
+/// Data quality rule catalogue: name, type, severity and whether the rule blocks promotion to Silver.
+table DQRule
+	sourceLineageTag: [dq].[rule]
+
+	column RuleID
+		dataType: string
+		sourceLineageTag: RuleID
+		summarizeBy: none
+		sourceColumn: RuleID
+
+	column RuleName
+		dataType: string
+		sourceLineageTag: RuleName
+		summarizeBy: none
+		sourceColumn: RuleName
+
+	column EntityName
+		dataType: string
+		sourceLineageTag: EntityName
+		summarizeBy: none
+		sourceColumn: EntityName
+
+	column Description
+		dataType: string
+		sourceLineageTag: Description
+		summarizeBy: none
+		sourceColumn: Description
+
+	column Severity
+		dataType: string
+		sourceLineageTag: Severity
+		summarizeBy: none
+		sourceColumn: Severity
+
+	column RuleType
+		dataType: string
+		sourceLineageTag: RuleType
+		summarizeBy: none
+		sourceColumn: RuleType
+
+	column IsBlocking
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceLineageTag: IsBlocking
+		summarizeBy: none
+		sourceColumn: IsBlocking
+
+	column IsActive
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceLineageTag: IsActive
+		summarizeBy: none
+		sourceColumn: IsActive
+
+	column IsApplicable
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceLineageTag: IsApplicable
+		summarizeBy: none
+		sourceColumn: IsApplicable
+
+	column Notes
+		dataType: string
+		sourceLineageTag: Notes
+		summarizeBy: none
+		sourceColumn: Notes
+
+	partition DQRule = entity
+		mode: directLake
+		source
+			entityName: rule
+			schemaName: dq
+			expressionSource: 'DirectLake - HP_02_LH_Health_Silver'
